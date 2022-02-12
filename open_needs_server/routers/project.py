@@ -19,6 +19,18 @@ def read_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
     return db_projects
 
 
+@projects.post("/", response_model=schemas.Project)
+def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)):
+
+    db_project = api.get_organization_project_by_title(db, organization_id=project.organization_id,
+                                                       project_title=project.title)
+    if db_project:
+        raise HTTPException(status_code=400, detail="Project already registered for organization")
+
+    db_project = api.create_organization_project(db, project=project)
+    return db_project
+
+
 @projects.get("/{project_id}", response_model=schemas.Project)
 def read_project(project_id: int, db: Session = Depends(get_db)):
     db_project = api.get_project(db, project_id=project_id)
@@ -27,6 +39,4 @@ def read_project(project_id: int, db: Session = Depends(get_db)):
     return db_project
 
 
-@projects.post("/{project_id}/needs/", response_model=schemas.Need)
-def create_need_for_project(project_id: int, need: schemas.NeedCreate, db: Session = Depends(get_db)):
-    return api.create_need(db=db, project_id=project_id, need=need)
+

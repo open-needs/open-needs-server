@@ -31,8 +31,8 @@ def get_organization_project_by_title(db: Session, organization_id: int, project
                                            models.Project.organization_id == organization_id).first()
 
 
-def create_organization_project(db: Session, organization_id: int, project: schemas.Project):
-    db_project = models.Project(title=project.title, organization_id=organization_id)
+def create_organization_project(db: Session, project: schemas.Project):
+    db_project = models.Project(title=project.title, organization_id=project.organization_id)
     db.add(db_project)
     db.commit()
     db.refresh(db_project)

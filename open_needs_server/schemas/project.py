@@ -4,6 +4,7 @@ from .need import Need
 
 class ProjectBase(BaseModel):
     title: str
+    organization_id: int
 
 
 class ProjectCreate(ProjectBase):
@@ -12,7 +13,6 @@ class ProjectCreate(ProjectBase):
 
 class Project(ProjectBase):
     id: int
-    organization_id: int
     needs: list[Need] = []
 
     class Config:

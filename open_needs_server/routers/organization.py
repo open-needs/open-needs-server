@@ -37,15 +37,3 @@ def read_organization(organization_id: int, db: Session = Depends(get_db)):
     return db_organization
 
 
-@organizations.post("/{organization_id}/projects/", response_model=schemas.Project)
-def create_project_for_organization(organization_id: int, project: schemas.ProjectCreate,
-                                    db: Session = Depends(get_db)):
-
-    db_project = api.get_organization_project_by_title(db, organization_id=organization_id,
-                                                       project_title=project.title)
-    if db_project:
-        raise HTTPException(status_code=400, detail="Project already registered for organization")
-
-    db_project = api.create_organization_project(db, organization_id=organization_id, project=project)
-    return db_project
-    return api.create_organization_project(db=db, organization_id=organization_id, project=project)
