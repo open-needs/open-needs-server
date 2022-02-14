@@ -1,12 +1,9 @@
+import asyncio
 import uvicorn
 from fastapi import FastAPI
-from fastapi_admin.app import app as admin_app
 
-from open_needs_server.database import engine, Base
 from open_needs_server import routers
-
-Base.metadata.create_all(bind=engine)
-
+from open_needs_server.database import create_db_and_tables
 
 
 app = FastAPI(
@@ -19,12 +16,16 @@ app = FastAPI(
              "url": "https://github.com/open-needs"}
 )
 
-app.mount("/admin", admin_app)
-
 app.include_router(routers.organizations)
 app.include_router(routers.projects)
 app.include_router(routers.needs)
 app.include_router(routers.filters)
+
+
+async def app_setup():
+    await create_db_and_tables()
+
+asyncio.run(app_setup())
 
 
 if __name__ == "__main__":

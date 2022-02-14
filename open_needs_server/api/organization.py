@@ -1,24 +1,27 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, insert
 
 from open_needs_server import models
 from open_needs_server import schemas
 
 
-def get_organization(db: Session, organization_id: int):
-    return db.query(models.Organization).filter(models.Organization.id == organization_id).first()
+async def get_organization(db: AsyncSession, organization_id: int):
+    result = await db.execute(select(models.Organization).filter(models.Organization.id == organization_id))
+    return result.scalars().first()
 
 
-def get_organization_by_title(db: Session, organization_title: int):
-    return db.query(models.Organization).filter(models.Organization.title == organization_title).first()
+async def get_organization_by_title(db: AsyncSession, organization_title: int):
+    result = await db.execute(select(models.Organization).filter(models.Organization.title == organization_title))
+    return result.scalars().first()
 
 
-def get_organizations(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Organization).offset(skip).limit(limit).all()
+async def get_organizations(db: AsyncSession, skip: int = 0, limit: int = 100):
+    result = await db.execute(select(models.Organization).offset(skip).limit(limit))
+    return result.scalars().all()
 
 
-def create_organization(db: Session, organization: schemas.organization):
-    db_organization = models.Organization(title=organization.title)
-    db.add(db_organization)
-    db.commit()
-    db.refresh(db_organization)
-    return db_organization
+async def create_organization(db: AsyncSession, organization: schemas.organization):
+    cursor = await db.execute(insert(models.Organization), {'title': organization.title})
+    await db.commit()
+    organization_id = cursor.inserted_primary_key[0]
+    return {**organization.dict(), "id": organization_id}
