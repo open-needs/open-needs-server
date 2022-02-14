@@ -11,3 +11,7 @@ class UserCreate(models.BaseUserCreate):
 
 class UserUpdate(models.BaseUserUpdate):
     pass
+
+
+class UserDB(User, models.BaseUserDB):
+    pass
