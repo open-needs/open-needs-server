@@ -13,4 +13,4 @@ class Project(Base):
     organization_id = Column(Integer, ForeignKey("organizations.id"))
     organization = relationship("Organization", back_populates="projects")
 
-    needs = relationship("Need", back_populates="project")
+    needs = relationship("Need", back_populates="project", lazy='selectin')

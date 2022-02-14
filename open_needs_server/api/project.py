@@ -21,10 +21,10 @@ async def get_projects(db: AsyncSession, skip: int = 0, limit: int = 100):
 
 
 async def create_project(db: AsyncSession, project: schemas.Project):
-    cursor = await db.execute(insert(models.Project), {'title': project.title})
+    cursor = await db.execute(insert(models.Project), project)
     await db.commit()
     project_id = cursor.inserted_primary_key[0]
-    return {**project.dict(), "id": project_id}
+    return {**project, "id": project_id}
 
 
 # Orga specific

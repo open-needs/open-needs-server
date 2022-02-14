@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from open_needs_server import api, schemas
@@ -15,11 +16,12 @@ organizations = APIRouter(
 
 @organizations.post("/", response_model=schemas.Organization)
 async def create_organization(organization: schemas.OrganizationCreate, db: AsyncSession = Depends(get_db)):
+    organization_json = jsonable_encoder(organization)
     db_organization = await api.get_organization_by_title(db, organization_title=organization.title)
     if db_organization:
         raise HTTPException(status_code=400, detail="organization already registerd")
 
-    db_organization = await api.create_organization(db, organization=organization)
+    db_organization = await api.create_organization(db, organization=organization_json)
     return db_organization
 
 

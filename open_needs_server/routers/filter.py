@@ -16,10 +16,10 @@ filters = APIRouter(
 
 
 @filters.post("/needs", response_model=list[schemas.Need])
-def filter_needs(filters: schemas.Filter, db: Session = Depends(get_db)):
+async def filter_needs(filters: schemas.Filter, db: Session = Depends(get_db)):
     filters_json = jsonable_encoder(filters, exclude_unset=True)
     try:
-        need_db = api.filter_needs(db=db, filters=filters_json)
+        need_db = await api.filter_needs(db=db, filters=filters_json)
     except api.OnApiNeedException as e:
         raise HTTPException(e)
 

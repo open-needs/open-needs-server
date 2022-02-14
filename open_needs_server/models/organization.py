@@ -10,5 +10,5 @@ class Organization(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, unique=True, index=True)
 
-    projects = relationship("Project", back_populates="organization")
+    projects = relationship("Project", back_populates="organization", lazy='selectin')
 

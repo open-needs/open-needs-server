@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.ext.asyncio import AsyncSession
+
 
 from open_needs_server import api, schemas
 from open_needs_server.dependencies import get_db
@@ -21,13 +23,13 @@ async def read_projects(skip: int = 0, limit: int = 100, db: AsyncSession = Depe
 
 @projects.post("/", response_model=schemas.Project)
 async def create_project(project: schemas.ProjectCreate, db: AsyncSession = Depends(get_db)):
-
+    project_json = jsonable_encoder(project)
     db_project = await api.get_organization_project_by_title(db, organization_id=project.organization_id,
                                                        project_title=project.title)
     if db_project:
         raise HTTPException(status_code=400, detail="Project already registered for organization")
 
-    db_project = await api.create_project(db, project=project)
+    db_project = await api.create_project(db, project=project_json)
     return db_project
 
 

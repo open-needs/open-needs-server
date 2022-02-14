@@ -21,7 +21,7 @@ async def get_organizations(db: AsyncSession, skip: int = 0, limit: int = 100):
 
 
 async def create_organization(db: AsyncSession, organization: schemas.organization):
-    cursor = await db.execute(insert(models.Organization), {'title': organization.title})
+    cursor = await db.execute(insert(models.Organization), organization)
     await db.commit()
     organization_id = cursor.inserted_primary_key[0]
-    return {**organization.dict(), "id": organization_id}
+    return {**organization, "id": organization_id}
