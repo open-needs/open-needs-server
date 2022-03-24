@@ -70,5 +70,10 @@ async def on_startup():
 
 current_active_user = fastapi_users.current_user(active=True)
 
-if __name__ == "__main__":
+
+def start():
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+if __name__ == "__main__":
+    start()

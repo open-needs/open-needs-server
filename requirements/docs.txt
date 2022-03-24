@@ -1,0 +1,11 @@
+sphinx
+jinja2<3.1
+sphinx-immaterial           # The theme
+sphinxcontrib-plantuml      # Used for all architecture and mockup images
+sphinxcontrib-httpdomain    # Used REST-API documentation
+sphinxcontrib-needs         # need objects and filtering
+sphinx-panels               # tabs, dropdonws, cards and more
+sphinx-disqus               # comment field integration
+sphinx-preview              # iframe-preview for links
+sphinx-jsonschema           # nice schema representation as table
+sphinx-data-viewer          # list view of schemas
