@@ -1,0 +1,83 @@
+{
+  "organizations": [
+    {
+      "title": "RocketLab"
+    }
+  ],
+  "projects":[
+    {
+      "title": "Neptune3000",
+      "organization_id": 1
+    },
+    {
+      "title": "Mars5000",
+      "organization_id": 1
+    }
+  ],
+  "needs": [
+    {
+      "project_id": 1,
+      "title": "Build rocket",
+      "description": "We finally need to build our Neptune3000 rocket.",
+      "meta": {
+        "id": "req_1",
+        "type": "requirement",
+        "status": "done",
+        "priority": "high",
+        "costs": 3500000,
+        "approved": true
+      }
+    },
+    {
+      "project_id": 1,
+      "title": "Test rocket power",
+      "description": "Lets test the rocket on a test bench",
+      "meta": {
+        "id": "req_2",
+        "type": "requirement",
+        "status": "open",
+        "priority": "high",
+        "costs": 500000,
+        "approved": false
+      }
+    },
+    {
+      "project_id": 1,
+      "title": "Rocket painting",
+      "description": "Red and blue. No other colors please.",
+      "meta": {
+        "id": "req_3",
+        "type": "requirement",
+        "status": "open",
+        "priority": "low",
+        "costs": 20000,
+        "approved": true
+      }
+    },
+    {
+      "project_id": 1,
+      "title": "Pumps from company AwesomePumps",
+      "description": "We simply reuse the pump system ABC-Pumps from AwesomePumps Inc.",
+      "meta": {
+        "id": "spec_1",
+        "type": "specification",
+        "status": "open",
+        "links": "req_1"
+      }
+    },
+    {
+      "project_id": 1,
+      "title": "Fuel = Applejuice",
+      "description": "We use AppleJuice as our manin fuel.",
+      "meta": {
+        "id": "spec_2",
+        "type": "specification",
+        "status": "open",
+        "links": "req_1"
+      }
+    }
+
+  ]
+
+}
+
