@@ -1,6 +1,5 @@
-import asyncio
+import logging
 import uvicorn
-from fastapi import FastAPI
 from fastapi_users import FastAPIUsers
 
 from open_needs_server import routers
@@ -8,16 +7,25 @@ from open_needs_server.database import create_db_and_tables
 from open_needs_server import models, schemas
 from open_needs_server.security import auth_backend, get_user_manager
 
+from open_needs_server.version import VERSION
+from open_needs_server.app import OpenNeedsServerApp
+from open_needs_server.extensions import OrganizationExtension, ProjectExtension
 
-app = FastAPI(
+logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
+log = logging.getLogger(__name__)
+
+app = OpenNeedsServerApp(
     title="Open-Needs Server",
-    version="0.1.0",
+    version=VERSION,
     description="REST API Server of Open-Needs",
     license_info={"name": "MIT License",
                   "url": "https://github.com/open-needs/open-needs-server/blob/main/LICENSE"},
     contact={"name": "Open-Needs community",
              "url": "https://github.com/open-needs"}
 )
+
+org_ext = OrganizationExtension(app, 'Organization', VERSION)
+project_ext = ProjectExtension(app, 'Project', VERSION)
 
 app.include_router(routers.organizations)
 app.include_router(routers.projects)
@@ -67,6 +75,7 @@ app.include_router(
 @app.on_event("startup")
 async def on_startup():
     await create_db_and_tables()
+    app.startup_report()
 
 current_active_user = fastapi_users.current_user(active=True)
 
