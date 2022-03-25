@@ -11,7 +11,9 @@ from fastapi_users.authentication import AuthenticationBackend, BearerTransport,
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from open_needs_server import models, schemas
+from .models import UserModel
+from .schemas import UserDBSchema, UserCreateSchema
+
 from open_needs_server.dependencies import get_db
 
 
@@ -19,7 +21,7 @@ SECRET = "SECRET"
 
 
 async def get_user_db(session: AsyncSession = Depends(get_db)):
-    yield SQLAlchemyUserDatabase(schemas.UserDB, session, models.User)
+    yield SQLAlchemyUserDatabase(UserDBSchema, session, UserModel)
 
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
@@ -36,21 +38,21 @@ auth_backend = AuthenticationBackend(
 )
 
 
-class UserManager(BaseUserManager[schemas.UserCreate, models.User]):
-    user_db_model = schemas.UserDB
+class UserManager(BaseUserManager[UserCreateSchema, UserModel]):
+    user_db_model = UserDBSchema
     reset_password_token_secret = SECRET
     verification_token_secret = SECRET
 
-    async def on_after_register(self, user: models.User, request: Optional[Request] = None):
+    async def on_after_register(self, user: UserModel, request: Optional[Request] = None):
         print(f"User {user.id} has registered.")
 
     async def on_after_forgot_password(
-        self, user: models.User, token: str, request: Optional[Request] = None
+        self, user: UserModel, token: str, request: Optional[Request] = None
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
 
     async def on_after_request_verify(
-        self, user: models.User, token: str, request: Optional[Request] = None
+        self, user: UserModel, token: str, request: Optional[Request] = None
     ):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 

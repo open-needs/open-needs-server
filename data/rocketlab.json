@@ -1,4 +1,14 @@
 {
+  "users": [
+    {
+      "email": "peter@peter.com",
+      "password": "peter"
+    },
+    {
+      "email": "admin@admin.com",
+      "password": "admin"
+    }
+  ],
   "organizations": [
     {
       "title": "RocketLab"

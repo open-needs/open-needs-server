@@ -4,13 +4,13 @@ from sqlalchemy.orm import relationship
 from open_needs_server.database import Base
 
 
-class Project(Base):
+class ProjectModel(Base):
     __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, unique=False, index=True)
 
     organization_id = Column(Integer, ForeignKey("organizations.id"))
-    organization = relationship("Organization", back_populates="projects")
+    organization = relationship("OrganizationModel", back_populates="projects")
 
-    needs = relationship("Need", back_populates="project", lazy='selectin')
+    needs = relationship("NeedModel", back_populates="project", lazy='selectin')

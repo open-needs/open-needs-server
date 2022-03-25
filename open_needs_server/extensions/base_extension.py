@@ -41,3 +41,6 @@ class ONSExtension:
             'extension': self.name,
             'func': func
         }
+
+    def register_router(self, router, *args, **kwargs):
+        self.ons_app.include_router(router, *args, **kwargs)

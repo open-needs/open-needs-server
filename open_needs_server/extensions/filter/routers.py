@@ -3,11 +3,14 @@ from fastapi.encoders import jsonable_encoder
 
 from sqlalchemy.orm import Session
 
-from open_needs_server import api, schemas
+from open_needs_server.extensions.need.schemas import NeedSchema
+from .api import filter_needs, OnApiFilterException
+from .schemas import FilterSchema
+
 from open_needs_server.dependencies import get_db
 
 
-filters = APIRouter(
+filter_router = APIRouter(
     prefix="/api/filter",
     tags=["filter"],
     dependencies=[],
@@ -15,12 +18,12 @@ filters = APIRouter(
 )
 
 
-@filters.post("/needs", response_model=list[schemas.Need])
-async def filter_needs(filters: schemas.Filter, db: Session = Depends(get_db)):
+@filter_router.post("/needs", response_model=list[NeedSchema])
+async def rest_filter_needs(filters: FilterSchema, db: Session = Depends(get_db)):
     filters_json = jsonable_encoder(filters, exclude_unset=True)
     try:
-        need_db = await api.filter_needs(db=db, filters=filters_json)
-    except api.OnApiNeedException as e:
+        need_db = await filter_needs(db=db, filters=filters_json)
+    except OnApiFilterException as e:
         raise HTTPException(e)
 
     return need_db

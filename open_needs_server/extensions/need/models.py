@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from open_needs_server.database import Base
 
 
-class Need(Base):
+class NeedModel(Base):
     __tablename__ = "needs"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -14,4 +14,4 @@ class Need(Base):
     meta = Column(JSON, unique=False, nullable=True, index=True)
 
     project_id = Column(Integer, ForeignKey("projects.id"))
-    project = relationship("Project", back_populates="needs")
+    project = relationship("ProjectModel", back_populates="needs")

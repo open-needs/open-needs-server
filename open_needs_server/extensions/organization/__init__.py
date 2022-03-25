@@ -1,5 +1,6 @@
 import logging
 from open_needs_server.extensions.base_extension import ONSExtension
+from .routers import organizations_router
 
 log = logging.getLogger(__name__)
 
@@ -16,9 +17,11 @@ ORG_EVENTS = [
 
 
 class OrganizationExtension(ONSExtension):
-    """Maintains the needed configuration for handling organizations"""
+    """Organization handling"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         for event in ORG_EVENTS:
             self.register_event(*event)
+
+        self.register_router(organizations_router)

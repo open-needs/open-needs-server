@@ -2,28 +2,28 @@ from pydantic import BaseModel
 from typing import Dict, Union, Optional
 
 
-class NeedBase(BaseModel):
+class NeedBaseSchema(BaseModel):
     title: str
     description: str | None = None
     project_id: int
     meta: Dict[str, Union[float, str]] | None = None
 
 
-class NeedFilter(NeedBase):
+class NeedFilterSchema(NeedBaseSchema):
     title: Optional[str]
     description: Optional[str] | None = None
     project_id: Optional[int]
     meta: Dict[str, Union[float, str]] | None = None
 
 
-class NeedCreate(NeedBase):
+class NeedCreateSchema(NeedBaseSchema):
     title: str
     description: str | None = None
     project_id: int
     meta: Dict[str, Union[float, str]] | None = None
 
 
-class Need(NeedBase):
+class NeedSchema(NeedBaseSchema):
     id: int
 
     class Config:
