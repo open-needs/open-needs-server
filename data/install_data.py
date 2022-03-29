@@ -7,14 +7,16 @@ from rich.console import Console
 import requests
 import urllib.parse
 
+from open_needs_server.config import settings
+
 
 console = Console()
 
 
 @click.command()
 @click.argument('input', type=click.File('rb'))
-@click.option('--server', default='127.0.0.1', type=str)
-@click.option('--port', default='8000', type=str)
+@click.option('--server', default=settings.server.server, type=str)
+@click.option('--port', default=settings.server.port, type=str)
 def install(input, server, port):
     base_url = f'http://{server}:{port}'
     user_url = urllib.parse.urljoin(base_url, 'auth/register')

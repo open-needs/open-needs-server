@@ -3,20 +3,26 @@ import logging
 import uvicorn
 import time
 
+from open_needs_server.config import settings
+
+# Set logger so that initialisation code can use configured loggers.
+logging_conf_path = os.path.join(os.path.dirname(__file__), 'logging.conf')
+logging.config.fileConfig(logging_conf_path, disable_existing_loggers=False)
+
+log = logging.getLogger(__name__)
+log.setLevel(settings.server.log_level)  # Level for root
+logging.getLogger('open_needs_server').setLevel(settings.server.log_level)  # Level for server only
+
 from open_needs_server.database import create_db_and_tables
 
 from open_needs_server.version import VERSION
+
 from open_needs_server.app import OpenNeedsServerApp
 from open_needs_server.extensions import OrganizationExtension, \
     ProjectExtension, NeedExtension, FilterExtension, UserSecurityExtension, \
     ExtensionViewerExtension
 
-
 start_time = time.time()
-
-logging_conf_path = os.path.join(os.path.dirname(__file__), 'logging.conf')
-logging.config.fileConfig(logging_conf_path, disable_existing_loggers=False)
-log = logging.getLogger(__name__)
 
 # Create main app
 ons_app = OpenNeedsServerApp(
@@ -37,6 +43,7 @@ filter_ext = FilterExtension(ons_app, 'Filter', VERSION)
 user_security_ext = UserSecurityExtension(ons_app, 'UserSecurity', VERSION)
 extension_ext = ExtensionViewerExtension(ons_app, 'ExtensionViewer', VERSION)
 
+
 # Register specific handlers
 @ons_app.on_event("startup")
 async def on_startup():
@@ -46,7 +53,7 @@ async def on_startup():
 
 def start():
     """Start the webserver"""
-    uvicorn.run(ons_app, host="0.0.0.0", port=8000)
+    uvicorn.run(ons_app, host=settings.server.server, port=settings.server.port)
 
 
 if __name__ == "__main__":

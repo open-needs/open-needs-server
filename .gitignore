@@ -23,3 +23,7 @@ docs/_images/need_pie_*.png
 .dockerignore
 
 *.db
+
+
+# Ignore dynaconf secret files
+.secrets.*

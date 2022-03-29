@@ -4,7 +4,15 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///./sql_app.db"
+from open_needs_server.config import settings
+
+import logging
+
+
+SQLALCHEMY_DATABASE_URL = settings.database.sql_string
+
+log = logging.getLogger(__name__)
+log.debug(f'SQL string: {SQLALCHEMY_DATABASE_URL}')
 
 engine = create_async_engine(SQLALCHEMY_DATABASE_URL)
 # engine = create_async_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
