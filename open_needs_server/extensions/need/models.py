@@ -7,6 +7,9 @@ from open_needs_server.database import Base
 class NeedModel(Base):
     __tablename__ = "needs"
 
+    def __repr__(self) -> str:
+        return f"[{self.id}]{self.title}"
+
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, unique=False, index=True)
     description = Column(String, unique=False, index=False)

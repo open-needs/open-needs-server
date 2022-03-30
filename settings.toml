@@ -5,3 +5,29 @@ log_level = "DEBUG"
 
 [database]
 sql_string = "sqlite+aiosqlite:///./ons.db"
+
+[admin]
+
+    [admin.Organizations]
+    model = "open_needs_server.extensions.organization.models:OrganizationModel"
+    columns = ["id", "title", "projects"]
+    name = "Organization"
+    icon = "fa-solid fa-building"
+
+    [admin.Projects]
+    model = "open_needs_server.extensions.project.models:ProjectModel"
+    columns = ["id", "title", "organization", "needs"]
+    name = "Project"
+    icon = "fa-solid fa-box-open"
+
+    [admin.Needs]
+    model = "open_needs_server.extensions.need.models:NeedModel"
+    columns = ["id", "title", "project", "description", "meta"]
+    name = "Need"
+    icon = "fa-solid fa-note-sticky"
+
+    [admin.Users]
+    model = "open_needs_server.extensions.user_security.models:UserModel"
+    columns = ["id", "email", "is_verified", "is_active", "is_superuser"]
+    name = "User"
+    icon = "fa-solid fa-user"

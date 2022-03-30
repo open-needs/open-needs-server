@@ -20,7 +20,7 @@ from open_needs_server.version import VERSION
 from open_needs_server.app import OpenNeedsServerApp
 from open_needs_server.extensions import OrganizationExtension, \
     ProjectExtension, NeedExtension, FilterExtension, UserSecurityExtension, \
-    ExtensionViewerExtension
+    ExtensionViewerExtension, OnsAdminExtension
 
 start_time = time.time()
 
@@ -42,6 +42,7 @@ need_ext = NeedExtension(ons_app, 'Need', VERSION)
 filter_ext = FilterExtension(ons_app, 'Filter', VERSION)
 user_security_ext = UserSecurityExtension(ons_app, 'UserSecurity', VERSION)
 extension_ext = ExtensionViewerExtension(ons_app, 'ExtensionViewer', VERSION)
+admin_ext = OnsAdminExtension(ons_app, 'OnsAdmin', VERSION)
 
 
 # Register specific handlers
