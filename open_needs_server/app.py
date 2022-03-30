@@ -1,8 +1,15 @@
+import os.path
+
 from open_needs_server.version import VERSION
 import time
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+
 from rich.console import Console
 from rich.markdown import Markdown
+
+
 
 WELCOME = f"""
 # Open-Needs Server {VERSION}
@@ -16,11 +23,18 @@ class OpenNeedsServerApp(FastAPI):
 
         self.ons_extensions = {}
         self.ons_events = {}
+        self.ons_version = VERSION
+
+        template_path = os.path.join(os.path.dirname(__file__), '_templates')
+        static_path = os.path.join(os.path.dirname(__file__), '_static')
+
+        self.template = Jinja2Templates(directory=template_path)
+        self.mount("/static", StaticFiles(directory=static_path), name="static")
 
         self.console = Console()  # Create rich console
-        self.welcome_text()
+        self._welcome_text()
 
-    def welcome_text(self):
+    def _welcome_text(self):
         text = Markdown(WELCOME)
         self.console.print(text)
 
