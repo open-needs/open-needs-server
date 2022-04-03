@@ -1,5 +1,7 @@
 import logging
 from open_needs_server.extensions.base_extension import ONSExtension
+from open_needs_server.version import VERSION
+
 from .routers import needs_router
 
 log = logging.getLogger(__name__)
@@ -20,6 +22,7 @@ class NeedExtension(ONSExtension):
     """Need object handling"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.version = VERSION
 
         for event in ORG_EVENTS:
             self.register_event(*event)

@@ -5,6 +5,7 @@ from sqladmin import Admin, ModelAdmin
 from open_needs_server.extensions.base_extension import ONSExtension
 from open_needs_server.database import engine
 from open_needs_server.config import settings
+from open_needs_server.version import VERSION
 
 from open_needs_server.extensions.organization.models import OrganizationModel
 
@@ -16,6 +17,7 @@ class OnsAdminExtension(ONSExtension):
     """Extension for loading SqlAlchemyAdmin"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.version = VERSION
 
         self.admin = Admin(self.ons_app, engine)
 

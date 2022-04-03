@@ -3,6 +3,18 @@ server = "127.0.0.1"
 port = 9595
 log_level = "DEBUG"
 
+extensions = [
+    "open_needs_server.extensions:OrganizationExtension",
+    "open_needs_server.extensions:ProjectExtension",
+    "open_needs_server.extensions:NeedExtension",
+    "open_needs_server.extensions:FilterExtension",
+    "open_needs_server.extensions:UserSecurityExtension",
+    "open_needs_server.extensions:ExtensionViewerExtension",
+    "open_needs_server.extensions:OnsAdminExtension",
+    "open_needs_server.extensions:WelcomePage",
+    "open_needs_server.extensions:EventLoggerExtension",
+]
+
 [database]
 sql_string = "sqlite+aiosqlite:///./ons.db"
 

@@ -1,5 +1,6 @@
 import logging
 from open_needs_server.extensions.base_extension import ONSExtension
+from open_needs_server.version import VERSION
 
 from .routers import projects_router
 
@@ -21,6 +22,7 @@ class ProjectExtension(ONSExtension):
     """Project handling"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.version = VERSION
 
         for event in PROJECT_EVENTS:
             self.register_event(*event)

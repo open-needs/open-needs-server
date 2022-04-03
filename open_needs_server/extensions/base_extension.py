@@ -9,22 +9,16 @@ log = logging.getLogger(__name__)
 
 class ONSExtension:
 
-    def __init__(self, ons_app: OpenNeedsServerApp, name: str, version: str):
+    def __init__(self, ons_app: OpenNeedsServerApp, version: str = "0.0.0"):
         self.ons_app = ons_app
-        self.name = name
+        self.name = type(self).__name__
         self.version = version
         self.description = self.__doc__
-
-        if self.name in self.ons_app.ons_extensions:
-            raise KeyError(f"Extension already registered: {self.name}")
-
-        self.ons_app.ons_extensions[self.name] = self
-        log.debug(f'Extension loaded: {self.name} {self.version}')
 
     def register_event(self, event: str, description: str):
         if event not in self.ons_app.ons_events:
             self.ons_app.ons_events[event] = {
-                "owner": self.name,
+                "extension": self.name,
                 "description": description,
                 "listeners": []
             }
@@ -33,14 +27,29 @@ class ONSExtension:
             owner = self.ons_app.ons_events[event]['owner']
             log.debug(f'Event already exist: {event} {self.name} (owner={owner})')
 
-    def register_listener(self, event: str, func: object):
+    def register_listener(self, event: str, func: object, extra: dict = None):
         if event not in self.ons_app.ons_events:
             raise ONSExtensionException(f'Unknown event: {event}')
 
+        if extra is None:
+            extra = {}
+
         self.ons_app.ons_events[event]["listeners"] = {
             'extension': self.name,
-            'func': func
+            'func': func,
+            'extra': extra
         }
+        log.debug(f'Listener registered: On "{event} for {self.name}')
+
+    def fire_event(self, event, data):
+        log.debug(f'Event "{event} fired for {len(self.ons_app.ons_events[event])} listeners')
+
+        if event not in self.ons_app.ons_events:
+            raise ONSExtensionException(f'Unknown event: {event}')
+
+        for listener in self.ons_app.ons_events[event]:
+            log.debug(f'Calling listener {listener["extension"]}:{listener["func"].__name__} for event {event}')
+            listener['func'](event, data=data, extra=listener['extra'])
 
     def register_router(self, router, *args, **kwargs):
         self.ons_app.include_router(router, *args, **kwargs)

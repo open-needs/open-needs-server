@@ -6,3 +6,4 @@ from .user_security import UserSecurityExtension
 from .extension_viewer import ExtensionViewerExtension
 from .ons_admin import OnsAdminExtension
 from .welcome_page import WelcomePage
+from .event_logger import EventLoggerExtension

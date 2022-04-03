@@ -2,6 +2,7 @@ import logging
 from fastapi_users import FastAPIUsers
 
 from open_needs_server.extensions.base_extension import ONSExtension
+from open_needs_server.version import VERSION
 from .security import auth_backend, get_user_manager
 from .schemas import UserSchema, UserCreateSchema, UserUpdateSchema, UserDBSchema
 
@@ -15,6 +16,7 @@ class UserSecurityExtension(ONSExtension):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.version = VERSION
 
         fastapi_users = FastAPIUsers(
             get_user_manager,

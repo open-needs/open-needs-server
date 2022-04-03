@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 
 from open_needs_server.extensions.base_extension import ONSExtension
+from open_needs_server.version import VERSION
 
 
 log = logging.getLogger(__name__)
@@ -15,6 +16,8 @@ class WelcomePage(ONSExtension):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.version = VERSION
+
         template_path = os.path.join(os.path.dirname(__file__), '_templates')
         templates = Jinja2Templates(directory=template_path)
 

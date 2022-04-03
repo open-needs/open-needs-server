@@ -18,9 +18,7 @@ from open_needs_server.database import create_db_and_tables
 from open_needs_server.version import VERSION
 
 from open_needs_server.app import OpenNeedsServerApp
-from open_needs_server.extensions import OrganizationExtension, \
-    ProjectExtension, NeedExtension, FilterExtension, UserSecurityExtension, \
-    ExtensionViewerExtension, OnsAdminExtension, WelcomePage
+
 
 start_time = time.time()
 
@@ -36,19 +34,13 @@ ons_app = OpenNeedsServerApp(
 )
 
 # Load extensions
-org_ext = OrganizationExtension(ons_app, 'Organization', VERSION)
-project_ext = ProjectExtension(ons_app, 'Project', VERSION)
-need_ext = NeedExtension(ons_app, 'Need', VERSION)
-filter_ext = FilterExtension(ons_app, 'Filter', VERSION)
-user_security_ext = UserSecurityExtension(ons_app, 'UserSecurity', VERSION)
-extension_ext = ExtensionViewerExtension(ons_app, 'ExtensionViewer', VERSION)
-admin_ext = OnsAdminExtension(ons_app, 'OnsAdmin', VERSION)
-welcome_ext = WelcomePage(ons_app, 'WelcomePage', VERSION)
+
 
 
 # Register specific handlers
 @ons_app.on_event("startup")
 async def on_startup():
+    ons_app.load_extensions(settings.server.extensions)
     await create_db_and_tables()
     ons_app.startup_report(start_time)
 

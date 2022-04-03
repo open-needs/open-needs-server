@@ -1,3 +1,5 @@
+import importlib
+import logging
 import os.path
 
 from open_needs_server.version import VERSION
@@ -10,6 +12,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 
 
+log = logging.getLogger(__name__)
 
 WELCOME = f"""
 # Open-Needs Server {VERSION}
@@ -23,6 +26,8 @@ class OpenNeedsServerApp(FastAPI):
 
         self.ons_extensions = {}
         self.ons_events = {}
+        self.ons_extensions = {}
+
         self.ons_version = VERSION
 
         template_path = os.path.join(os.path.dirname(__file__), '_templates')
@@ -33,6 +38,26 @@ class OpenNeedsServerApp(FastAPI):
 
         self.console = Console()  # Create rich console
         self._welcome_text()
+
+    def load_extensions(self, extensions):
+        for extension in extensions:
+            ext_mod, ext_class = extension.split(":")
+            try:
+                module = importlib.import_module(ext_mod)
+            except ModuleNotFoundError:
+                raise ONSExceptions(f'Extension module could not be imported/found: {ext_mod}')
+
+            try:
+                clazz = getattr(module, ext_class)
+            except AttributeError:
+                raise ONSExceptions(f'Extension class could not be found: {ext_class}')
+
+            ext_obj = clazz(self)  # Initialize extension
+            try:
+                self.ons_extensions[ext_obj.name] = ext_obj
+            except KeyError:
+                raise ONSExceptions(f"Extension already registered: {ext_obj.name}")
+            log.debug(f'Extension loaded: {ext_obj.name} {ext_obj.version}')
 
     def _welcome_text(self):
         text = Markdown(WELCOME)
@@ -48,4 +73,8 @@ class OpenNeedsServerApp(FastAPI):
 
         self.console.rule(f"[bold red]Extensions")
         for ext in self.ons_extensions.values():
-            print(f'{ext.name:15}\t{ext.version:10}\t{ext.description}')
+            print(f'{ext.name:25}\t{ext.version:10}\t{ext.description}')
+
+
+class ONSExceptions(BaseException):
+    """Generic ONS Exception"""
