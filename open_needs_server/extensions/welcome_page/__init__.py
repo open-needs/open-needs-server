@@ -4,7 +4,7 @@ from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 
-from open_needs_server.extensions.base_extension import ONSExtension
+from open_needs_server.extensions.base import ONSExtension
 from open_needs_server.version import VERSION
 
 

@@ -1,5 +1,5 @@
 import logging
-from open_needs_server.extensions.base_extension import ONSExtension
+from open_needs_server.extensions.base import ONSExtension
 from .routers import filter_router
 
 from open_needs_server.version import VERSION

@@ -2,7 +2,7 @@ import importlib
 import logging
 from sqladmin import Admin, ModelAdmin
 
-from open_needs_server.extensions.base_extension import ONSExtension
+from open_needs_server.extensions.base import ONSExtension
 from open_needs_server.database import engine
 from open_needs_server.config import settings
 from open_needs_server.version import VERSION

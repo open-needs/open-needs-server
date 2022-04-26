@@ -1,3 +1,5 @@
+from rich import print
+
 from open_needs_server.app import OpenNeedsServerApp
 from open_needs_server.exceptions import ONSExtensionException
 
@@ -14,6 +16,9 @@ class ONSExtension:
         self.name = type(self).__name__
         self.version = version
         self.description = self.__doc__
+
+    def print(self, msg):
+        print(f'[blue]{self.name[:20]:<20}[/blue]: {msg}')
 
     def register_event(self, event: str, description: str):
         if event not in self.ons_app.ons_events:
@@ -34,22 +39,33 @@ class ONSExtension:
         if extra is None:
             extra = {}
 
-        self.ons_app.ons_events[event]["listeners"] = {
+        self.ons_app.ons_events[event]["listeners"].append({
             'extension': self.name,
             'func': func,
             'extra': extra
-        }
+        })
         log.debug(f'Listener registered: On "{event} for {self.name}')
 
     def fire_event(self, event, data):
-        log.debug(f'Event "{event} fired for {len(self.ons_app.ons_events[event])} listeners')
-
         if event not in self.ons_app.ons_events:
-            raise ONSExtensionException(f'Unknown event: {event}')
+            raise ONSExtensionException(f'Unknown event: {event} fired by {self.name}')
 
-        for listener in self.ons_app.ons_events[event]:
+        log.debug(f'Event "{event} fired for {len(self.ons_app.ons_events[event]["listeners"])} listeners')
+
+        # Calls all listeners in a fix sequence. No parallel execution
+        for listener in self.ons_app.ons_events[event]['listeners']:
             log.debug(f'Calling listener {listener["extension"]}:{listener["func"].__name__} for event {event}')
-            listener['func'](event, data=data, extra=listener['extra'])
+            data = listener['func'](event, data=data, extra=listener['extra'], ext=self.name)
+
+        return data
 
     def register_router(self, router, *args, **kwargs):
         self.ons_app.include_router(router, *args, **kwargs)
+
+
+class OnsExtensionException(BaseException):
+    def __init__(self, msg, **args):
+        self.msg = msg
+
+    def __repr__(self):
+        return f'{self.__name__}: {self.msg}'

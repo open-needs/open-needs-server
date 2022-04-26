@@ -1,6 +1,9 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 
 from .schemas import ExtensionBaseSchema
+
+from open_needs_server.extensions.user_security import current_superuser
+from open_needs_server.extensions.user_security.schemas import UserDBSchema
 
 
 extension_viewer_router = APIRouter(
@@ -12,7 +15,8 @@ extension_viewer_router = APIRouter(
 
 
 @extension_viewer_router.get("/", response_model=list[ExtensionBaseSchema])
-async def rest_read_extensions(request: Request):
+async def rest_read_extensions(request: Request,
+                               superuser: UserDBSchema = Depends(current_superuser)):
     ons_app = request.app
     extensions = []
 

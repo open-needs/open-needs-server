@@ -9,6 +9,14 @@ from open_needs_server.config import settings
 import logging
 
 
+class ONSBase(object):
+    def to_dict(self):
+        """Returns the current Model bas dict. Without any sqlalchemy specific data"""
+        data = dict(self.__dict__)
+        data.pop('_sa_instance_state', None)
+        return data
+
+
 SQLALCHEMY_DATABASE_URL = settings.database.sql_string
 
 log = logging.getLogger(__name__)
@@ -19,7 +27,7 @@ engine = create_async_engine(SQLALCHEMY_DATABASE_URL)
 
 async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
-Base = declarative_base()
+Base = declarative_base(cls=ONSBase)
 
 
 async def create_db_and_tables():

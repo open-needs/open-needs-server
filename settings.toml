@@ -40,6 +40,12 @@ sql_string = "sqlite+aiosqlite:///./ons.db"
 
     [admin.Users]
     model = "open_needs_server.extensions.user_security.models:UserModel"
-    columns = ["id", "email", "is_verified", "is_active", "is_superuser"]
+    columns = ["id", "email", "roles", "is_verified", "is_active", "is_superuser"]
     name = "User"
     icon = "fa-solid fa-user"
+
+    [admin.Roles]
+    model = "open_needs_server.extensions.user_security.models:RoleModel"
+    columns = ["id", "name", "users"]
+    name = "Role"
+    icon = "fa-solid fa-address-card"

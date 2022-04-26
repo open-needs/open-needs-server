@@ -10,7 +10,14 @@ class OrganizationCreateSchema(OrganizationBaseSchema):
     pass
 
 
-class OrganizationSchema(OrganizationBaseSchema):
+class OrganizationShortSchema(OrganizationBaseSchema):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class OrganizationSchema(OrganizationShortSchema):
     id: int
     projects: list[ProjectSchema] = []
 
