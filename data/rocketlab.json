@@ -9,6 +9,20 @@
       "password": "admin"
     }
   ],
+  "roles": [
+    {
+      "role": "view_roles_all",
+      "users": ["peter@peter.com"]
+    },
+    {
+      "role": "view_org_all",
+      "users": ["admin@admin.com"]
+    },
+    {
+      "role": "view_projects_all",
+      "users": ["admin@admin.com", "peter@peter.com"]
+    }
+  ],
   "organizations": [
     {
       "title": "RocketLab"

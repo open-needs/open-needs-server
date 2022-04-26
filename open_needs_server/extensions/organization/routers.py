@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from open_needs_server.dependencies import get_db
 from open_needs_server.extensions.base import ONSExtension
-from open_needs_server.extensions.user_security import current_active_user
+from open_needs_server.extensions.user_security.dependecies import current_active_user
 from open_needs_server.extensions.user_security.schemas import UserDBSchema
 
 from .schemas import OrganizationSchema, OrganizationCreateSchema, OrganizationShortSchema

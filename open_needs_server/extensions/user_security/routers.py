@@ -7,6 +7,7 @@ from open_needs_server.exceptions import ONSExtensionException
 
 from .schemas import RoleReturnSchema, RoleUpdateSchema
 from .api import get_roles, get_role_by_name, update_role
+from .dependecies import RoleChecker
 
 roles_router = APIRouter(
     prefix="/api/roles",
@@ -16,7 +17,11 @@ roles_router = APIRouter(
 )
 
 
-@roles_router.get("/", response_model=list[RoleReturnSchema])
+read_roles = RoleChecker(['view_roles_all'])
+
+
+@roles_router.get("/", response_model=list[RoleReturnSchema],
+                  dependencies=[Depends(read_roles)])
 async def rest_read_roles(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
     db_projects = await get_roles(db, skip=skip, limit=limit)
     return db_projects

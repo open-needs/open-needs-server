@@ -20,6 +20,19 @@ class ONSExtension:
     def print(self, msg):
         print(f'[blue]{self.name[:20]:<20}[/blue]: {msg}')
 
+    def register_role(self, role: str, description: str):
+        if role not in self.ons_app.ons_roles:
+            self.ons_app.ons_roles[role] = {
+                "name": role,
+                "extension": self.name,
+                "description": description,
+                "users": []
+            }
+            log.debug(f'Role registered: {role} by {self.name}')
+        else:
+            extension = self.ons_app.ons_role[role]['extension']
+            log.debug(f'Role already exist: {role} {self.name} (extension={extension})')
+
     def register_event(self, event: str, description: str):
         if event not in self.ons_app.ons_events:
             self.ons_app.ons_events[event] = {
@@ -29,8 +42,8 @@ class ONSExtension:
             }
             log.debug(f'Event registered: {event} by {self.name}')
         else:
-            owner = self.ons_app.ons_events[event]['owner']
-            log.debug(f'Event already exist: {event} {self.name} (owner={owner})')
+            extension = self.ons_app.ons_events[event]['extension']
+            log.debug(f'Event already exist: {event} {self.name} (extension={extension})')
 
     def register_listener(self, event: str, func: object, extra: dict = None):
         if event not in self.ons_app.ons_events:

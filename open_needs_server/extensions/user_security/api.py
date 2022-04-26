@@ -27,7 +27,8 @@ async def get_roles(db: AsyncSession, skip: int = 0, limit: int = 100):
 
 async def get_role_by_name(db: AsyncSession, role_name: int):
     result = await db.execute(select(RoleModel).filter(RoleModel.name == role_name))
-    return result.scalars().first()
+    role_db = result.scalars().first()
+    return role_db
 
 
 async def create_role(db: AsyncSession, role_name: str, description: str):

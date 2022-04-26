@@ -27,6 +27,7 @@ class OpenNeedsServerApp(FastAPI):
         self.ons_extensions = {}
         self.ons_events = {}
         self.ons_extensions = {}
+        self.ons_roles = {}
 
         self.ons_version = VERSION
 
@@ -69,6 +70,7 @@ class OpenNeedsServerApp(FastAPI):
         self.console.rule(f"[bold red]Statistics")
         print(f'Extensions:   {len(self.ons_extensions)}')
         print(f'Events:       {len(self.ons_events)}')
+        print(f'Roles:       {len(self.ons_roles)}')
         print(f'Startup time: {startup_time}')
 
         self.console.rule(f"[bold red]Extensions")

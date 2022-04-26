@@ -18,7 +18,7 @@ class UserModel(Base, SQLAlchemyBaseUserTable):
     roles = relationship("RoleModel",
                          secondary=roles_users_table,
                          back_populates="users",
-                         lazy='selectin')
+                         lazy='selectin')  # immediate
 
 
 class RoleModel(Base):
@@ -28,8 +28,9 @@ class RoleModel(Base):
         return f"{self.name}"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=False, index=True)
+    name = Column(String, unique=True, index=True)
+    description = Column(String)
     users = relationship("UserModel",
                          secondary=roles_users_table,
                          back_populates="roles",
-                         lazy='selectin')
+                         lazy='selectin')  # selectin
