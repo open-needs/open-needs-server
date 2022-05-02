@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from open_needs_server.dependencies import get_db
 from open_needs_server.extensions.base import ONSExtension
-from open_needs_server.extensions.user_security.dependecies import current_active_user, RoleChecker
+from open_needs_server.extensions.user_security.dependencies import current_active_user, RoleChecker
 from open_needs_server.extensions.user_security.schemas import UserDBSchema
 
 from .schemas import OrganizationReturnSchema, OrganizationCreateSchema, OrganizationShortSchema
@@ -22,16 +22,16 @@ organizations_router = APIRouter(
 async def get_extension(request: Request):
     return request.app.ons_extensions['OrganizationExtension']
 
-read_organizations = RoleChecker(['view_org_all'])
-change_organizations = RoleChecker(['change_org_all'])
-delete_organizations = RoleChecker(['delete_org_all'])
+read_organizations = RoleChecker(['view_organizations_all'])
+change_organizations = RoleChecker(['change_organizations_all'])
+delete_organizations = RoleChecker(['delete_organizations_all'])
 
 
 @organizations_router.get("/",
                           response_model=list[OrganizationShortSchema],
                           summary='List all organizations',
                           dependencies=[Depends(read_organizations)],
-                          description='Needed roles: view_org_all')
+                          description='Needed roles: view_organizations_all')
 async def rest_read_organizations(skip: int = 0, limit: int = 100,
                                   db: AsyncSession = Depends(get_db),
                                   ext: ONSExtension = Depends(get_extension),
@@ -65,7 +65,7 @@ async def rest_read_organization(organization_id: int, db: AsyncSession = Depend
                                  ext: ONSExtension = Depends(get_extension)):
     db_organization = await get_organization(ext, db, organization_id=organization_id)
     if db_organization is None:
-        raise HTTPException(status_code=404, detail="organization not found")
+        raise HTTPException(status_code=404, detail="Organization not found")
     return db_organization
 
 
@@ -79,7 +79,7 @@ async def rest_update_organization(organization: OrganizationCreateSchema, organ
     organization_json = jsonable_encoder(organization)
     db_organization = await get_organization(ext, db, organization_id=organization_id)
     if not db_organization:
-        raise HTTPException(status_code=404, detail="organization not found")
+        raise HTTPException(status_code=404, detail="Organization not found")
 
     db_organization = await update_organization(ext, db,
                                                 organization_id=organization_id,

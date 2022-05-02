@@ -11,7 +11,7 @@ from .security import auth_backend, get_user_manager
 from .schemas import UserReturnSchema, UserCreateSchema, UserUpdateSchema, UserDBSchema
 from .routers import roles_router
 from .api import create_role, get_role_by_name
-from .dependecies import fastapi_users_ext
+from .dependencies import fastapi_users_ext
 
 log = logging.getLogger(__name__)
 

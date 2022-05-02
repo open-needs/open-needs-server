@@ -30,7 +30,7 @@ class ONSExtension:
             }
             log.debug(f'Role registered: {role} by {self.name}')
         else:
-            extension = self.ons_app.ons_role[role]['extension']
+            extension = self.ons_app.ons_roles[role]['extension']
             log.debug(f'Role already exist: {role} {self.name} (extension={extension})')
 
     def register_event(self, event: str, description: str):

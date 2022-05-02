@@ -45,7 +45,8 @@ async def create_organization(ext: ONSExtension, db: AsyncSession, organization:
     return new_organization
 
 
-async def update_organization(ext: ONSExtension, db: AsyncSession,
+async def update_organization(ext: ONSExtension,
+                              db: AsyncSession,
                               organization_id: int,
                               organization: OrganizationCreateSchema) -> OrganizationModel:
     organization = ext.fire_event('org_update', organization)

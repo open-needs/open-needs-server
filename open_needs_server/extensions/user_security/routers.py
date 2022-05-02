@@ -7,7 +7,7 @@ from open_needs_server.exceptions import ONSExtensionException
 
 from .schemas import RoleReturnSchema, RoleUpdateSchema
 from .api import get_roles, get_role_by_name, update_role
-from .dependecies import RoleChecker, current_active_user
+from .dependencies import RoleChecker, current_active_user
 
 roles_router = APIRouter(
     prefix="/api/roles",

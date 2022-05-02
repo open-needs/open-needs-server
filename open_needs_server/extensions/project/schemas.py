@@ -4,11 +4,15 @@ from open_needs_server.extensions.need.schemas import NeedSchema
 
 class ProjectBaseSchema(BaseModel):
     title: str
-    organization_id: int
 
 
 class ProjectCreateSchema(ProjectBaseSchema):
-    pass
+    organization_id: int
+
+
+class ProjectChangeSchema(ProjectBaseSchema):
+    title: str | None
+    organization_id: int | None
 
 
 class ProjectSchema(ProjectBaseSchema):

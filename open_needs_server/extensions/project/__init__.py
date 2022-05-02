@@ -28,3 +28,7 @@ class ProjectExtension(ONSExtension):
             self.register_event(*event)
 
         self.register_router(projects_router)
+
+        self.register_role('view_projects_all', 'Can read all projects')
+        self.register_role('change_projects_all', 'Can change all projects')
+        self.register_role('delete_projects_all', 'Can delete all projects')

@@ -11,20 +11,24 @@
   ],
   "roles": [
     {
-      "role": "view_org_all",
+      "role": "view_organizations_all",
       "users": ["admin@admin.com"]
     },
     {
-      "role": "change_org_all",
+      "role": "change_organizations_all",
       "users": ["admin@admin.com"]
     },
     {
-      "role": "delete_org_all",
+      "role": "delete_organizations_all",
       "users": ["admin@admin.com"]
     },
     {
       "role": "view_projects_all",
       "users": ["admin@admin.com", "peter@peter.com"]
+    },
+    {
+      "role": "change_projects_all",
+      "users": ["admin@admin.com"]
     },
     {
       "role": "view_roles_all",
