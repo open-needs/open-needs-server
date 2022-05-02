@@ -15,10 +15,10 @@ class UserModel(Base, SQLAlchemyBaseUserTable):
     def __repr__(self) -> str:
         return f"{self.email}"
 
-    roles = relationship("RoleModel",
-                         secondary=roles_users_table,
-                         back_populates="users",
-                         lazy='selectin')  # immediate
+    # roles = relationship("RoleModel",
+    #                      secondary=roles_users_table,
+    #                      back_populates="users",
+    #                      lazy='selectin')  # immediate
 
 
 class RoleModel(Base):
@@ -32,5 +32,8 @@ class RoleModel(Base):
     description = Column(String)
     users = relationship("UserModel",
                          secondary=roles_users_table,
-                         back_populates="roles",
                          lazy='selectin')  # selectin
+
+    # ToDo: A role should be also project specific.
+    # E.g. Admin in project_A but not on project_B
+    # Could be also organization specific (then instead of project)

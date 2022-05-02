@@ -20,6 +20,7 @@ console = Console()
 def install(input, server, port):
     base_url = f'http://{server}:{port}'
     user_url = urllib.parse.urljoin(base_url, 'auth/register')
+    login_url = urllib.parse.urljoin(base_url, 'auth/jwt/login')
     role_url = urllib.parse.urljoin(base_url, 'api/roles')
     org_url = urllib.parse.urljoin(base_url, 'api/organizations')
     project_url = urllib.parse.urljoin(base_url, 'api/projects')
@@ -46,19 +47,32 @@ def install(input, server, port):
         r = requests.put(url, json=role_data)
         print(f'{index}. {role["role"]}\t {r.status_code}: {r.text if r.status_code != 200 else ""}')
 
+    console.rule(f"[bold red]Admin login")
+    login_data = {
+        "username": data['users'][0]['email'],
+        "password": data['users'][0]['password'],
+    }
+    r = requests.post(login_url, data=login_data)
+    if r.status_code > 300:
+        print('Can not login')
+        return
+    token = r.json()['access_token']
+    auth_header = {'Authorization': f'Bearer {token}'}  # Always use this one from now on
+    print(f'Login: {r.status_code} - Token: {token}')
+
     console.rule(f"[bold red]Organizations")
     for index, org in enumerate(data['organizations']):
-        r = requests.post(org_url, json=org)
+        r = requests.post(org_url, json=org, headers=auth_header)
         print(f'{index}. {org["title"]}\t {r.status_code}: {r.text if r.status_code != 200 else ""}')
 
     console.rule(f"[bold red]Projects")
     for index, project in enumerate(data['projects']):
-        r = requests.post(project_url, json=project)
+        r = requests.post(project_url, json=project, headers=auth_header)
         print(f'{index}. {project["title"]}\t {r.status_code}: {r.text if r.status_code != 200 else ""}')
 
     console.rule(f"[bold red]Needs")
     for index, need in enumerate(data['needs']):
-        r = requests.post(needs_url, json=need)
+        r = requests.post(needs_url, json=need, headers=auth_header)
         print(f'{index}. {need["title"]}\t {r.status_code}: {r.text if r.status_code != 200 else ""}')
 
 if __name__ == '__main__':

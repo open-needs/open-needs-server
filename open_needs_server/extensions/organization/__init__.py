@@ -29,3 +29,7 @@ class OrganizationExtension(ONSExtension):
             self.register_event(*event)
 
         self.register_router(organizations_router)
+
+        self.register_role('view_org_all', 'Can read all organizations')
+        self.register_role('change_org_all', 'Can change all organizations')
+        self.register_role('delete_org_all', 'Can delete all organizations')

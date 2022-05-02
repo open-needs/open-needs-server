@@ -2,9 +2,13 @@ import logging
 from fastapi import Depends, HTTPException
 from fastapi_users import FastAPIUsers
 from pydantic.types import List
+from sqlalchemy import select
+
+from open_needs_server.dependencies import get_db
 
 from .security import auth_backend, get_user_manager
 from .schemas import UserReturnSchema, UserCreateSchema, UserUpdateSchema, UserDBSchema
+from .models import RoleModel, UserModel
 
 
 log = logging.getLogger(__name__)
@@ -28,10 +32,12 @@ class RoleChecker:
     def __init__(self, allowed_roles: List):
         self.allowed_roles = allowed_roles
 
-    def __call__(self, user: UserDBSchema = Depends(current_active_user)):
-        user_roles = [role.name for role in user.roles]
+    async def __call__(self, db= Depends(get_db), user: UserDBSchema = Depends(current_active_user)):
+        result = await db.execute(select(RoleModel).filter(RoleModel.users.any(UserModel.email == user.email)))
+        user_roles = [role.name for role in result.scalars().all()]
+
         if not set(self.allowed_roles).issubset(user_roles):
             log.debug(f'User {user.email} has no role for {self.allowed_roles}')
             raise HTTPException(status_code=403, detail='Operation not permitted')
         else:
-            log.debug(f'User {user.email} has needed roles')
+            log.debug(f'User {user.email} has needed roles: {",".join(self.allowed_roles)}')

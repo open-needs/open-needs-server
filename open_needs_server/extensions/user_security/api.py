@@ -18,8 +18,8 @@ async def get_roles(db: AsyncSession, skip: int = 0, limit: int = 100):
     roles_clean = []
     for role in roles:
         role = role.to_dict()
-        users_ids = [str(user.id) for user in role['users']]
-        role['users'] = users_ids
+        users_emails = [str(user.email) for user in role['users']]
+        role['users'] = users_emails
         roles_clean.append(role)
 
     return roles_clean

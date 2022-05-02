@@ -22,7 +22,7 @@ sql_string = "sqlite+aiosqlite:///./ons.db"
 
     [admin.Organizations]
     model = "open_needs_server.extensions.organization.models:OrganizationModel"
-    columns = ["id", "title", "projects"]
+    columns = ["id", "title", "projects", "users"]
     name = "Organization"
     icon = "fa-solid fa-building"
 
@@ -40,7 +40,7 @@ sql_string = "sqlite+aiosqlite:///./ons.db"
 
     [admin.Users]
     model = "open_needs_server.extensions.user_security.models:UserModel"
-    columns = ["id", "email", "roles", "is_verified", "is_active", "is_superuser"]
+    columns = ["id", "email", "is_verified", "is_active", "is_superuser"]
     name = "User"
     icon = "fa-solid fa-user"
 

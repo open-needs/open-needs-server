@@ -17,9 +17,9 @@ class OrganizationShortSchema(OrganizationBaseSchema):
         orm_mode = True
 
 
-class OrganizationSchema(OrganizationShortSchema):
+class OrganizationReturnSchema(OrganizationShortSchema):
     id: int
-    projects: list[ProjectSchema] = []
+    # projects: list[ProjectSchema] = []
 
     class Config:
         orm_mode = True

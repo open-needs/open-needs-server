@@ -50,7 +50,6 @@ class UserSecurityExtension(ONSExtension):
                              prefix="/users",
                              tags=["users"])
 
-        self.register_role('view_org_all', 'Can read all organizations')
         self.register_role('view_projects_all', 'Can read all projects')
         self.register_role('view_roles_all', 'Can read all roles')
 

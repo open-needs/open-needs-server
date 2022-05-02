@@ -1,26 +1,34 @@
 {
   "users": [
     {
-      "email": "peter@peter.com",
-      "password": "peter"
-    },
-    {
       "email": "admin@admin.com",
       "password": "admin"
+    },
+    {
+      "email": "peter@peter.com",
+      "password": "peter"
     }
   ],
   "roles": [
-    {
-      "role": "view_roles_all",
-      "users": ["peter@peter.com"]
-    },
     {
       "role": "view_org_all",
       "users": ["admin@admin.com"]
     },
     {
+      "role": "change_org_all",
+      "users": ["admin@admin.com"]
+    },
+    {
+      "role": "delete_org_all",
+      "users": ["admin@admin.com"]
+    },
+    {
       "role": "view_projects_all",
       "users": ["admin@admin.com", "peter@peter.com"]
+    },
+    {
+      "role": "view_roles_all",
+      "users": ["peter@peter.com"]
     }
   ],
   "organizations": [

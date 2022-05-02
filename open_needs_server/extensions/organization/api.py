@@ -6,7 +6,7 @@ from open_needs_server.extensions.base import ONSExtension, OnsExtensionExceptio
 
 from .models import OrganizationModel
 from open_needs_server.extensions.project.models import ProjectModel
-from .schemas import OrganizationCreateSchema, OrganizationSchema
+from .schemas import OrganizationCreateSchema, OrganizationReturnSchema
 
 
 async def get_organization(ext: ONSExtension, db: AsyncSession, organization_id: int):
