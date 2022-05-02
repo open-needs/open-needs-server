@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from open_needs_server.extensions.need.schemas import NeedSchema
+from open_needs_server.extensions.need.schemas import NeedReturnSchema
 
 
 class ProjectBaseSchema(BaseModel):
@@ -17,7 +17,7 @@ class ProjectChangeSchema(ProjectBaseSchema):
 
 class ProjectSchema(ProjectBaseSchema):
     id: int
-    needs: list[NeedSchema] = []
+    needs: list[NeedReturnSchema] = []
 
     class Config:
         orm_mode = True

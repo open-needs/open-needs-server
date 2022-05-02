@@ -31,6 +31,22 @@
       "users": ["admin@admin.com"]
     },
     {
+      "role": "delete_projects_all",
+      "users": ["admin@admin.com"]
+    },
+    {
+      "role": "view_needs_all",
+      "users": ["admin@admin.com"]
+    },
+    {
+      "role": "change_needs_all",
+      "users": ["admin@admin.com"]
+    },
+    {
+      "role": "delete_needs_all",
+      "users": ["admin@admin.com"]
+    },
+    {
       "role": "view_roles_all",
       "users": ["peter@peter.com"]
     }

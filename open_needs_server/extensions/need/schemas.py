@@ -4,9 +4,9 @@ from typing import Dict, Union, Optional
 
 class NeedBaseSchema(BaseModel):
     title: str
-    description: str | None = None
+    description: str | None
     project_id: int
-    meta: Dict[str, Union[float, str]] | None = None
+    meta: Dict[str, Union[float, str]] | None
 
 
 class NeedFilterSchema(NeedBaseSchema):
@@ -23,7 +23,14 @@ class NeedCreateSchema(NeedBaseSchema):
     meta: Dict[str, Union[float, str]] | None = None
 
 
-class NeedSchema(NeedBaseSchema):
+class NeedUpdateSchema(NeedBaseSchema):
+    title: Optional[str]
+    description: Optional[str]
+    project_id: Optional[int] | None
+    meta: Optional[Dict[str, Union[float, str]]]
+
+
+class NeedReturnSchema(NeedBaseSchema):
     id: int
 
     class Config:

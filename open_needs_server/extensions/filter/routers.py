@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 
 from sqlalchemy.orm import Session
 
-from open_needs_server.extensions.need.schemas import NeedSchema
+from open_needs_server.extensions.need.schemas import NeedReturnSchema
 from .api import filter_needs, OnApiFilterException
 from .schemas import FilterSchema
 
@@ -18,7 +18,7 @@ filter_router = APIRouter(
 )
 
 
-@filter_router.post("/needs", response_model=list[NeedSchema])
+@filter_router.post("/needs", response_model=list[NeedReturnSchema])
 async def rest_filter_needs(filters: FilterSchema, db: Session = Depends(get_db)):
     filters_json = jsonable_encoder(filters, exclude_unset=True)
     try:

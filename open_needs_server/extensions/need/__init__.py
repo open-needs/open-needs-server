@@ -28,3 +28,7 @@ class NeedExtension(ONSExtension):
             self.register_event(*event)
 
         self.register_router(needs_router)
+
+        self.register_role('view_needs_all', 'Can read all needs')
+        self.register_role('change_needs_all', 'Can change all needs')
+        self.register_role('delete_needs_all', 'Can delete all needs')
