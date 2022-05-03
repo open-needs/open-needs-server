@@ -61,7 +61,7 @@ html_theme_options = {
     # "icon": {
     #     "repo": "open-needs/open-needs-server",
     # },
-    "site_url": "https://open-needs.org",
+    "site_url": "https://open-needs.org/open-needs-server",
     "repo_url": "https://github.com/open-needs/open-needs-server",
     "repo_name": "Open-Needs Server",
     "repo_type": "github",
@@ -82,25 +82,12 @@ html_theme_options = {
     ],
     "palette": [
         {
-            "media": "(prefers-color-scheme: light)",
+            # "media": "(prefers-color-scheme: light)",
             "scheme": "default",
-            "primary": "light-green",
-            "accent": "light-blue",
-            "toggle": {
-                "icon": "material/lightbulb-outline",
-                "name": "Switch to dark mode",
-            },
-        },
-        {
-            "media": "(prefers-color-scheme: dark)",
-            "scheme": "slate",
-            "primary": "deep-orange",
-            "accent": "lime",
-            "toggle": {
-                "icon": "material/lightbulb",
-                "name": "Switch to light mode",
-            },
-        },
+            "primary": "white",
+            "accent": "indigo",
+        }
+
     ],
     "version_dropdown": False,
     # "version_info": [
