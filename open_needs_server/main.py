@@ -1,9 +1,11 @@
-import os
 import logging
-import uvicorn
+import os
 import time
 
+from fastapi.middleware.cors import CORSMiddleware
 from open_needs_server.config import settings
+import uvicorn
+
 
 # Set logger so that initialisation code can use configured loggers.
 logging_conf_path = os.path.join(os.path.dirname(__file__), 'logging.conf')
@@ -13,11 +15,9 @@ log = logging.getLogger(__name__)
 log.setLevel(settings.server.log_level)  # Level for root
 logging.getLogger('open_needs_server').setLevel(settings.server.log_level)  # Level for server only
 
-from open_needs_server.database import create_db_and_tables
-
-from open_needs_server.version import VERSION
-
 from open_needs_server.app import OpenNeedsServerApp
+from open_needs_server.database import create_db_and_tables
+from open_needs_server.version import VERSION
 
 
 start_time = time.time()
@@ -31,6 +31,15 @@ ons_app = OpenNeedsServerApp(
                   "url": "https://github.com/open-needs/open-needs-server/blob/main/LICENSE"},
     contact={"name": "Open-Needs community",
              "url": "https://github.com/open-needs"}
+)
+
+# configure CORS
+ons_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Load extensions
