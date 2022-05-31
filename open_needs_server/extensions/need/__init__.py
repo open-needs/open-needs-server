@@ -1,4 +1,5 @@
 import logging
+
 from open_needs_server.extensions.base import ONSExtension
 from open_needs_server.version import VERSION
 

@@ -6,3 +6,4 @@ fastapi-users[sqlalchemy2]
 aiosqlite
 dynaconf
 sqladmin
+jsonschema

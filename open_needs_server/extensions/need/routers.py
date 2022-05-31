@@ -58,7 +58,7 @@ async def rest_create_need(need: NeedCreateSchema,
     try:
         need_db = await create_need(ext, db, need=need_json)
     except OnsApiNeedException as e:
-        raise HTTPException(e)
+        raise HTTPException(400, str(e))
 
     return need_db
 

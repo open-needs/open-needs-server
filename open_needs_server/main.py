@@ -1,6 +1,9 @@
 import logging
 import os
+import sys
+import threading
 import time
+import webbrowser
 
 from fastapi.middleware.cors import CORSMiddleware
 from open_needs_server.config import settings
@@ -44,8 +47,6 @@ ons_app.add_middleware(
 
 # Load extensions
 
-
-
 # Register specific handlers
 @ons_app.on_event("startup")
 async def on_startup():
@@ -54,8 +55,17 @@ async def on_startup():
     ons_app.startup_report(start_time)
 
 
+def start_browser():
+    """Opens the browser"""
+    time.sleep(0.5)
+    webbrowser.open_new_tab(f'{settings.server.server}:{settings.server.port}')
+
+
 def start():
     """Start the webserver"""
+    if settings.server.open_browser:
+        threading.Thread(target=start_browser).start()
+
     uvicorn.run(ons_app, host=settings.server.server, port=settings.server.port)
 
 

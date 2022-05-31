@@ -1,7 +1,15 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 
 from open_needs_server.database import Base
+
+
+projects_domains_table = Table(
+    "project_domain",
+    Base.metadata,
+    Column("project_id", ForeignKey("projects.id"), primary_key=True),
+    Column("domain_id", ForeignKey("domains.id"), primary_key=True ),
+)
 
 
 class ProjectModel(Base):
@@ -17,3 +25,5 @@ class ProjectModel(Base):
     organization = relationship("OrganizationModel", back_populates="projects")
 
     needs = relationship("NeedModel", back_populates="project", lazy='selectin')
+    domains = relationship("DomainModel", secondary=projects_domains_table,
+                           lazy='selectin')  #, lazy='selectin')

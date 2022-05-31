@@ -2,13 +2,18 @@
 server = "127.0.0.1"
 port = 9595
 log_level = "DEBUG"
+open_browser = false
 
 extensions = [
+    # DataModel extensions
     "open_needs_server.extensions:OrganizationExtension",
     "open_needs_server.extensions:ProjectExtension",
+    "open_needs_server.extensions:DomainExtension",
     "open_needs_server.extensions:NeedExtension",
-    "open_needs_server.extensions:FilterExtension",
+    # Authentication extensions
     "open_needs_server.extensions:UserSecurityExtension",
+    # Feature extensions
+    "open_needs_server.extensions:FilterExtension",
     "open_needs_server.extensions:ExtensionViewerExtension",
     "open_needs_server.extensions:OnsAdminExtension",
     "open_needs_server.extensions:WelcomePage",
@@ -28,9 +33,15 @@ sql_string = "sqlite+aiosqlite:///./ons.db"
 
     [admin.Projects]
     model = "open_needs_server.extensions.project.models:ProjectModel"
-    columns = ["id", "title", "organization", "needs"]
+    columns = ["id", "title", "organization", "domains", "needs"]
     name = "Project"
     icon = "fa-solid fa-box-open"
+
+    [admin.Domains]
+    model = "open_needs_server.extensions.domain.models:DomainModel"
+    columns = ["id", "title", "description", "jsonschema"]
+    name = "Domain"
+    icon = "fa-solid fa-ruler"
 
     [admin.Needs]
     model = "open_needs_server.extensions.need.models:NeedModel"

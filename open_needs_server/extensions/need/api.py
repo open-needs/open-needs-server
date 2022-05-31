@@ -14,7 +14,9 @@ async def get_need(ext: ONSExtension, db: AsyncSession, need_id: int):
 
 
 async def get_needs(ext: ONSExtension, db: AsyncSession, skip: int = 0, limit: int = 100):
+    ext.fire_event('need_read', None)
     result = await db.execute(select(NeedModel).offset(skip).limit(limit))
+    result = ext.fire_event('need_read_done', result)
     return result.scalars().all()
 
 
@@ -23,12 +25,18 @@ async def create_need(ext: ONSExtension, db: AsyncSession, need: NeedReturnSchem
     result = await db.execute(select(ProjectModel).filter(ProjectModel.id == project_id))
     db_project = result.scalars().first()
 
+    data = ext.fire_event('need_create', {'need': need, 'project': db_project})
+    need = data['need']
+
     if not db_project:
         raise OnsApiNeedException(f"Referenced project_id {project_id} not found")
 
     cursor = await db.execute(insert(NeedModel), need)
     await db.commit()
     need_id = cursor.inserted_primary_key[0]
+
+    need = ext.fire_event('need_create_done', need)
+
     return {**need, "id": need_id}
 
 

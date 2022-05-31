@@ -1,5 +1,6 @@
 from .organization import OrganizationExtension
 from .project import ProjectExtension
+from .domain import DomainExtension
 from .need import NeedExtension
 from .filter import FilterExtension
 from .user_security import UserSecurityExtension
