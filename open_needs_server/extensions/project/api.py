@@ -1,7 +1,10 @@
+from fastapi import HTTPException
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, insert, delete
 
 from open_needs_server.extensions.base import ONSExtension, OnsExtensionException
+from open_needs_server.extensions.domain.api import get_domain
 
 from .models import ProjectModel
 from .schemas import ProjectSchema
@@ -24,15 +27,24 @@ async def get_projects(db: AsyncSession, skip: int = 0, limit: int = 100):
 
 async def create_project(db: AsyncSession,
                          project: ProjectSchema):
+    domains_db = []
+    for domain_id in project['domains']:
+        domain_db = await get_domain(db, domain_id)
+        if not domain_db:
+            raise HTTPException(f'Unknown domain id: {domain_id}')
+        domains_db.append(domain_db)
+
     cursor = await db.execute(insert(ProjectModel), project)
     await db.commit()
     project_id = cursor.inserted_primary_key[0]
-    return {**project, "id": project_id}
+    project_db = await get_project(db, project_id)
+    project_db.domains = domains_db
+    await db.commit()
+
+    return project_db
 
 
 # Project specific
-
-
 async def get_organization_project_by_title(db: AsyncSession,
                                        organization_id: int,
                                        project_title: int):

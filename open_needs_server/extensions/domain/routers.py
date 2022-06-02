@@ -20,7 +20,7 @@ domains_router = APIRouter(
 
 
 async def get_extension(request: Request):
-    return request.app.ons_extensions['ProjectExtension']
+    return request.app.ons_extensions['DomainExtension']
 
 
 read_domains = RoleChecker(['view_domains_all'])
@@ -54,10 +54,9 @@ async def rest_create_domain(domain: DomainCreateSchema,
                              user: UserDBSchema = Depends(current_active_user)
                              ):
     domain_json = jsonable_encoder(domain)
-    db_domain = await get_organization_domain_by_title(db, organization_id=domain.organization_id,
-                                                       domain_title=domain.title)
+    db_domain = await get_domain_by_title(db, domain_title=domain.title)
     if db_domain:
-        raise HTTPException(status_code=400, detail="Project already registered for organization")
+        raise HTTPException(status_code=400, detail="A domain with this title is already registered")
 
     db_domain = await create_domain(db, domain=domain_json)
     return db_domain

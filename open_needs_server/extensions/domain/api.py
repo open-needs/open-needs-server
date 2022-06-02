@@ -23,7 +23,7 @@ async def get_domains(db: AsyncSession, skip: int = 0, limit: int = 100):
 
 
 async def create_domain(db: AsyncSession,
-                         domain: DomainSchema):
+                        domain: DomainSchema):
     cursor = await db.execute(insert(DomainModel), domain)
     await db.commit()
     domain_id = cursor.inserted_primary_key[0]

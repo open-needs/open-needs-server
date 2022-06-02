@@ -25,6 +25,7 @@ def install(input, server, port):
     org_url = urllib.parse.urljoin(base_url, 'api/organizations')
     project_url = urllib.parse.urljoin(base_url, 'api/projects')
     needs_url = urllib.parse.urljoin(base_url, 'api/needs')
+    domains_url = urllib.parse.urljoin(base_url, 'api/domains')
 
     data = json.load(input)
 
@@ -64,6 +65,11 @@ def install(input, server, port):
     for index, org in enumerate(data['organizations']):
         r = requests.post(org_url, json=org, headers=auth_header)
         print(f'{index}. {org["title"]}\t {r.status_code}: {r.text if r.status_code != 200 else ""}')
+
+    console.rule(f"[bold red]Domains")
+    for index, domain in enumerate(data['domains']):
+        r = requests.post(domains_url, json=domain, headers=auth_header)
+        print(f'{index}. {domain["title"]}\t {r.status_code}: {r.text if r.status_code != 200 else ""}')
 
     console.rule(f"[bold red]Projects")
     for index, project in enumerate(data['projects']):

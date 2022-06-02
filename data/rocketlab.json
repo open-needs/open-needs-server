@@ -12,55 +12,82 @@
   "roles": [
     {
       "role": "view_organizations_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     },
     {
       "role": "change_organizations_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     },
     {
       "role": "delete_organizations_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     },
     {
       "role": "view_projects_all",
-      "users": ["admin@admin.com", "peter@peter.com"]
+      "users": [
+        "admin@admin.com",
+        "peter@peter.com"
+      ]
     },
     {
       "role": "change_projects_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     },
     {
       "role": "delete_projects_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     },
     {
       "role": "view_needs_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     },
     {
       "role": "change_needs_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     },
     {
       "role": "delete_needs_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     },
     {
       "role": "view_roles_all",
-      "users": ["peter@peter.com"]
+      "users": [
+        "peter@peter.com"
+      ]
     },
     {
       "role": "view_domains_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     },
     {
       "role": "change_domains_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     },
     {
       "role": "delete_domains_all",
-      "users": ["admin@admin.com"]
+      "users": [
+        "admin@admin.com"
+      ]
     }
   ],
   "organizations": [
@@ -68,14 +95,16 @@
       "title": "RocketLab"
     }
   ],
-  "projects":[
+  "projects": [
     {
       "title": "Neptune3000",
-      "organization_id": 1
+      "organization_id": 1,
+      "domains": [1]
     },
     {
       "title": "Mars5000",
-      "organization_id": 1
+      "organization_id": 1,
+      "domains": [2]
     }
   ],
   "domains": [
@@ -83,10 +112,50 @@
       "title": "Basic domain",
       "description": "A really basic domain",
       "project_id": 1,
-      "jsonschema": "{\"type\": \"object\", \"properties\": {\"project_id\": {\"type\": \"string\"}, \"title\": {\"type\": \"string\"}, \"description\": {\"type\": \"string\"}}}"
+      "jsonschema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "title": "Mars5000 domain",
+      "description": "A really basic domain",
+      "project_id": 1,
+      "jsonschema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^MARS_(REQ|SPEC)_[0-9]{3,}"
+              }
+            }
+          }
+        }
+      }
     }
   ],
-
   "needs": [
     {
       "project_id": 1,
@@ -148,9 +217,17 @@
         "status": "open",
         "links": "req_1"
       }
+    },
+    {
+      "project_id": 2,
+      "title": "Be better as Neptune",
+      "description": "Neptune is boooooring....",
+      "meta": {
+        "id": "MARS_REQ_001",
+        "type": "requirement",
+        "status": "open"
+      }
     }
-
   ]
-
 }
 
