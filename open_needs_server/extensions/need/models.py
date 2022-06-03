@@ -11,8 +11,11 @@ class NeedModel(Base):
         return f"[{self.id}]{self.title}"
 
     id = Column(Integer, primary_key=True, index=True)
+    key = Column(Integer, unique=False, index=True)
+    type = Column(Integer, unique=False, index=True)
     title = Column(String, unique=False, index=True)
     description = Column(String, unique=False, index=False)
+    format = Column(String, unique=False, index=False)
 
     meta = Column(JSON, unique=False, nullable=True, index=True)
 

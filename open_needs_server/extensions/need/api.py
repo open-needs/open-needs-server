@@ -25,11 +25,11 @@ async def create_need(ext: ONSExtension, db: AsyncSession, need: NeedReturnSchem
     result = await db.execute(select(ProjectModel).filter(ProjectModel.id == project_id))
     db_project = result.scalars().first()
 
-    data = ext.fire_event('need_create', {'need': need, 'project': db_project})
-    need = data['need']
-
     if not db_project:
         raise OnsApiNeedException(f"Referenced project_id {project_id} not found")
+
+    data = ext.fire_event('need_create', {'need': need, 'project': db_project})
+    need = data['need']
 
     cursor = await db.execute(insert(NeedModel), need)
     await db.commit()

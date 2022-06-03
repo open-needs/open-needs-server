@@ -3,8 +3,11 @@ from typing import Dict, Union, Optional
 
 
 class NeedBaseSchema(BaseModel):
+    key: str
+    type: str
     title: str
     description: str | None
+    format: str | None
     project_id: int
     meta: Dict[str, Union[float, str]] | None
 
@@ -31,7 +34,6 @@ class NeedUpdateSchema(NeedBaseSchema):
 
 
 class NeedReturnSchema(NeedBaseSchema):
-    id: int
 
     class Config:
         orm_mode = True

@@ -159,11 +159,12 @@
   "needs": [
     {
       "project_id": 1,
+      "key": "NEP_001",
+      "type": "Requirement",
       "title": "Build rocket",
       "description": "We finally need to build our Neptune3000 rocket.",
+      "format": "txt",
       "meta": {
-        "id": "req_1",
-        "type": "requirement",
         "status": "done",
         "priority": "high",
         "costs": 3500000,
@@ -172,11 +173,12 @@
     },
     {
       "project_id": 1,
+      "key": "NEP_002",
+      "type": "Requirement",
       "title": "Test rocket power",
       "description": "Lets test the rocket on a test bench",
+      "format": "txt",
       "meta": {
-        "id": "req_2",
-        "type": "requirement",
         "status": "open",
         "priority": "high",
         "costs": 500000,
@@ -186,10 +188,11 @@
     {
       "project_id": 1,
       "title": "Rocket painting",
+      "key": "NEP_001",
+      "type": "Requirement",
       "description": "Red and blue. No other colors please.",
+      "format": "txt",
       "meta": {
-        "id": "req_3",
-        "type": "requirement",
         "status": "open",
         "priority": "low",
         "costs": 20000,
@@ -198,33 +201,36 @@
     },
     {
       "project_id": 1,
+      "key": "NEP_001",
+      "type": "Requirement",
       "title": "Pumps from company AwesomePumps",
       "description": "We simply reuse the pump system ABC-Pumps from AwesomePumps Inc.",
+      "format": "txt",
       "meta": {
-        "id": "spec_1",
-        "type": "specification",
         "status": "open",
         "links": "req_1"
       }
     },
     {
       "project_id": 1,
+      "key": "NEP_001",
+      "type": "Requirement",
       "title": "Fuel = Applejuice",
       "description": "We use AppleJuice as our manin fuel.",
+      "format": "txt",
       "meta": {
-        "id": "spec_2",
-        "type": "specification",
         "status": "open",
         "links": "req_1"
       }
     },
     {
       "project_id": 2,
+      "key": "MARS_REQ_001",
+      "type": "Requirement",
       "title": "Be better as Neptune",
       "description": "Neptune is boooooring....",
+      "format": "txt",
       "meta": {
-        "id": "MARS_REQ_001",
-        "type": "requirement",
         "status": "open"
       }
     }
