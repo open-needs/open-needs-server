@@ -17,7 +17,8 @@ class NeedModel(Base):
     description = Column(String, unique=False, index=False)
     format = Column(String, unique=False, index=False)
 
-    meta = Column(JSON, unique=False, nullable=True, index=True)
+    options = Column(JSON, unique=False, nullable=True, index=True)
+    references = Column(JSON, unique=False, nullable=True, index=True)
 
     project_id = Column(Integer, ForeignKey("projects.id"))
     project = relationship("ProjectModel", back_populates="needs")

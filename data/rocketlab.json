@@ -143,7 +143,7 @@
           "description": {
             "type": "string"
           },
-          "meta": {
+          "options": {
             "type": "object",
             "properties": {
               "id": {
@@ -164,11 +164,14 @@
       "title": "Build rocket",
       "description": "We finally need to build our Neptune3000 rocket.",
       "format": "txt",
-      "meta": {
+      "options": {
         "status": "done",
         "priority": "high",
         "costs": 3500000,
         "approved": true
+      },
+      "links": {
+        "links": []
       }
     },
     {
@@ -178,7 +181,7 @@
       "title": "Test rocket power",
       "description": "Lets test the rocket on a test bench",
       "format": "txt",
-      "meta": {
+      "options": {
         "status": "open",
         "priority": "high",
         "costs": 500000,
@@ -188,37 +191,43 @@
     {
       "project_id": 1,
       "title": "Rocket painting",
-      "key": "NEP_001",
+      "key": "NEP_003",
       "type": "Requirement",
       "description": "Red and blue. No other colors please.",
       "format": "txt",
-      "meta": {
+      "options": {
         "status": "open",
         "priority": "low",
         "costs": 20000,
         "approved": true
+      },
+      "references": {
+        "links": ["NEP_001", "NEP_002"]
       }
     },
     {
       "project_id": 1,
-      "key": "NEP_001",
+      "key": "NEP_004",
       "type": "Requirement",
       "title": "Pumps from company AwesomePumps",
       "description": "We simply reuse the pump system ABC-Pumps from AwesomePumps Inc.",
       "format": "txt",
-      "meta": {
+      "options": {
         "status": "open",
         "links": "req_1"
+      },
+      "references": {
+        "links": ["NEP_003"]
       }
     },
     {
       "project_id": 1,
-      "key": "NEP_001",
+      "key": "NEP_005",
       "type": "Requirement",
       "title": "Fuel = Applejuice",
       "description": "We use AppleJuice as our manin fuel.",
       "format": "txt",
-      "meta": {
+      "options": {
         "status": "open",
         "links": "req_1"
       }
@@ -230,7 +239,7 @@
       "title": "Be better as Neptune",
       "description": "Neptune is boooooring....",
       "format": "txt",
-      "meta": {
+      "options": {
         "status": "open"
       }
     }

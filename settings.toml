@@ -45,7 +45,7 @@ sql_string = "sqlite+aiosqlite:///./ons.db"
 
     [admin.Needs]
     model = "open_needs_server.extensions.need.models:NeedModel"
-    columns = ["id", "title", "project", "description", "meta"]
+    columns = ["id", "title", "project", "description", "options", "references"]
     name = "Need"
     icon = "fa-solid fa-note-sticky"
 

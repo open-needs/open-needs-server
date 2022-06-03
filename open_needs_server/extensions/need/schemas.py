@@ -9,31 +9,37 @@ class NeedBaseSchema(BaseModel):
     description: str | None
     format: str | None
     project_id: int
-    meta: Dict[str, Union[float, str]] | None
+    options: Dict[str, Union[float, str]] | None
+    references: Dict[str, list[str]] | None
 
 
 class NeedFilterSchema(NeedBaseSchema):
     title: Optional[str]
     description: Optional[str] | None = None
     project_id: Optional[int]
-    meta: Dict[str, Union[float, str]] | None = None
+    options: Dict[str, Union[float, str]] | None = None
+    references: Dict[str, list[str]] | None = None
 
 
 class NeedCreateSchema(NeedBaseSchema):
     title: str
     description: str | None = None
     project_id: int
-    meta: Dict[str, Union[float, str]] | None = None
+    options: Dict[str, Union[float, str]] | None = {}
+    references: Dict[str, list[str]] | None = {}
 
 
 class NeedUpdateSchema(NeedBaseSchema):
     title: Optional[str]
     description: Optional[str]
     project_id: Optional[int] | None
-    meta: Optional[Dict[str, Union[float, str]]]
+    options: Optional[Dict[str, Union[float, str]]]
+    references: Optional[Dict[str, list[str]]]
 
 
 class NeedReturnSchema(NeedBaseSchema):
+    options: Dict[str, Union[float, str]]
+    references: Dict[str, list[str]]
 
     class Config:
         orm_mode = True
