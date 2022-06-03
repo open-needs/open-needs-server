@@ -9,3 +9,4 @@ sphinx-disqus               # comment field integration
 sphinx-preview              # iframe-preview for links
 sphinx-jsonschema           # nice schema representation as table
 sphinx-data-viewer          # list view of schemas
+autodoc_pydantic

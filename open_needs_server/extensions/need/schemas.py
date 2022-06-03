@@ -1,3 +1,7 @@
+"""
+Schemas for the Need Extension of Open-Needs Server
+"""
+
 from pydantic import BaseModel
 from typing import Dict, Union, Optional
 

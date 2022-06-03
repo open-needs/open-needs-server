@@ -73,9 +73,11 @@ Sitemap
 -------
 
 .. toctree::
+   :maxdepth: 3
 
    installation
    configuration
+   extensions/index
    client
    contributing
    changelog
