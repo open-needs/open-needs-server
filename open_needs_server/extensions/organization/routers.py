@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from open_needs_server.dependencies import get_db
 from open_needs_server.extensions.base import ONSExtension
 from open_needs_server.extensions.user_security.dependencies import current_active_user, RoleChecker
-from open_needs_server.extensions.user_security.schemas import UserDBSchema
+from open_needs_server.extensions.user_security.models import UserModel
 
 from .schemas import OrganizationReturnSchema, OrganizationCreateSchema, OrganizationShortSchema
 from .api import OnsOrganizationNotFound, get_organization_by_title, create_organization, get_organization, \
@@ -35,7 +35,7 @@ delete_organizations = RoleChecker(['delete_organizations_all'])
 async def rest_read_organizations(skip: int = 0, limit: int = 100,
                                   db: AsyncSession = Depends(get_db),
                                   ext: ONSExtension = Depends(get_extension),
-                                  user: UserDBSchema = Depends(current_active_user)):
+                                  user: UserModel = Depends(current_active_user)):
 
     ext.print(f'user: {user.email} - {user.is_active}')
     db_organizations = await get_organizations(ext, db, skip=skip, limit=limit)

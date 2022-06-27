@@ -6,6 +6,7 @@ from open_needs_server.dependencies import get_db
 from open_needs_server.exceptions import ONSExtensionException
 
 from .schemas import RoleReturnSchema, RoleUpdateSchema
+# from .models import UserModel
 from .api import get_roles, get_role_by_name, update_role
 from .dependencies import RoleChecker, current_active_user
 

@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, Column, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
-from fastapi_users.db import SQLAlchemyBaseUserTable
+from fastapi_users.db import SQLAlchemyBaseUserTableUUID
 
 from open_needs_server.database import Base
 
@@ -11,7 +11,7 @@ roles_users_table = Table('roles_users', Base.metadata,
                           )
 
 
-class UserModel(Base, SQLAlchemyBaseUserTable):
+class UserModel(SQLAlchemyBaseUserTableUUID, Base):
     def __repr__(self) -> str:
         return f"{self.email}"
 

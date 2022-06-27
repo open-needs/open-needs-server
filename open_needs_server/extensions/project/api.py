@@ -31,7 +31,7 @@ async def create_project(db: AsyncSession,
     for domain_id in project['domains']:
         domain_db = await get_domain(db, domain_id)
         if not domain_db:
-            raise HTTPException(f'Unknown domain id: {domain_id}')
+            raise HTTPException(404, detail=f'Unknown domain id: {domain_id}')
         domains_db.append(domain_db)
 
     cursor = await db.execute(insert(ProjectModel), project)
@@ -46,8 +46,8 @@ async def create_project(db: AsyncSession,
 
 # Project specific
 async def get_organization_project_by_title(db: AsyncSession,
-                                       organization_id: int,
-                                       project_title: int):
+                                            organization_id: int,
+                                            project_title: int):
     result = await db.execute(select(ProjectModel).filter(ProjectModel.title == project_title,
                                                           ProjectModel.organization_id == organization_id))
     return result.scalars().first()
@@ -93,3 +93,4 @@ async def delete_project(ext: ONSExtension,
 
 class OnsProjectNotFound(OnsExtensionException):
     """A requested object could not be found"""
+    pass

@@ -1,5 +1,7 @@
+import uuid
+
 from pydantic import BaseModel
-from fastapi_users import models
+from fastapi_users import schemas
 from typing import List, Optional
 
 
@@ -20,7 +22,7 @@ class RoleReturnSchema(RoleBaseSchema):
         orm_mode = True
 
 
-class UserReturnSchema(models.BaseUser):
+class UserReturnSchema(schemas.BaseUser[uuid.UUID]):
     # roles: Optional[List[RoleReturnSchema]] | None = []
 
     class Config:
@@ -29,7 +31,7 @@ class UserReturnSchema(models.BaseUser):
 
 # CREATE
 
-class UserCreateSchema(models.BaseUserCreate):
+class UserCreateSchema(schemas.BaseUserCreate):
     pass
 
 
@@ -39,13 +41,5 @@ class RoleUpdateSchema(BaseModel):
     users: List[str]
 
 
-class UserUpdateSchema(models.BaseUserUpdate):
+class UserUpdateSchema(schemas.BaseUserUpdate):
     pass
-
-
-# DB
-
-class UserDBSchema(UserReturnSchema, models.BaseUserDB):
-    pass
-
-

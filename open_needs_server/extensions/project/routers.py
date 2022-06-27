@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from open_needs_server.extensions.base import ONSExtension
-from open_needs_server.extensions.user_security.schemas import UserDBSchema
+from open_needs_server.extensions.user_security.models import UserModel
 from open_needs_server.extensions.user_security.dependencies import current_active_user, RoleChecker
 
 from .schemas import ProjectSchema, ProjectCreateSchema, ProjectChangeSchema
@@ -36,7 +36,7 @@ delete_projects = RoleChecker(['delete_projects_all'])
 async def rest_read_projects(skip: int = 0, limit: int = 100,
                              db: AsyncSession = Depends(get_db),
                              ext: ONSExtension = Depends(get_extension),
-                             user: UserDBSchema = Depends(current_active_user)
+                             user: UserModel = Depends(current_active_user)
                              ):
     db_projects = await get_projects(db, skip=skip, limit=limit)
     return db_projects
@@ -51,7 +51,7 @@ async def rest_read_projects(skip: int = 0, limit: int = 100,
 async def rest_create_project(project: ProjectCreateSchema,
                               db: AsyncSession = Depends(get_db),
                               ext: ONSExtension = Depends(get_extension),
-                              user: UserDBSchema = Depends(current_active_user)
+                              user: UserModel = Depends(current_active_user)
                               ):
     project_json = jsonable_encoder(project)
     db_project = await get_organization_project_by_title(db, organization_id=project.organization_id,
@@ -72,7 +72,7 @@ async def rest_create_project(project: ProjectCreateSchema,
 async def rest_read_project(project_id: int,
                             db: AsyncSession = Depends(get_db),
                             ext: ONSExtension = Depends(get_extension),
-                            user: UserDBSchema = Depends(current_active_user)
+                            user: UserModel = Depends(current_active_user)
                             ):
     db_project = await get_project(db, project_id=project_id)
     if db_project is None:
@@ -90,7 +90,7 @@ async def rest_update_project(project_id: int,
                               project: ProjectChangeSchema,
                               db: AsyncSession = Depends(get_db),
                               ext: ONSExtension = Depends(get_extension),
-                              user: UserDBSchema = Depends(current_active_user)
+                              user: UserModel = Depends(current_active_user)
                               ):
     project_json = jsonable_encoder(project)
     db_project = await get_project(db, project_id=project_id)
@@ -111,7 +111,7 @@ async def rest_update_project(project_id: int,
 async def rest_delete_project(project_id: int,
                               db: AsyncSession = Depends(get_db),
                               ext: ONSExtension = Depends(get_extension),
-                              user: UserDBSchema = Depends(current_active_user)
+                              user: UserModel = Depends(current_active_user)
                               ):
     """Deletes a selected organizations by its ID"""
     try:
