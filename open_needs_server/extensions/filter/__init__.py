@@ -7,12 +7,12 @@ from open_needs_server.version import VERSION
 
 log = logging.getLogger(__name__)
 
-FILTER_EVENTS = [
-]
+FILTER_EVENTS = []
 
 
 class FilterExtension(ONSExtension):
     """Adds filter features"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.version = VERSION

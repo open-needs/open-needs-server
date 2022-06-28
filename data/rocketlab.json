@@ -2,11 +2,11 @@
   "users": [
     {
       "email": "admin@admin.com",
-      "password": "admin"
+      "password": "qwerty_@dmin_user"
     },
     {
       "email": "peter@peter.com",
-      "password": "peter"
+      "password": "peter_1234_user"
     }
   ],
   "roles": [

@@ -8,15 +8,19 @@ from typing import Optional
 
 from fastapi_users import BaseUserManager, UUIDIDMixin
 from fastapi_users.db import SQLAlchemyUserDatabase
-from fastapi_users.authentication import AuthenticationBackend, BearerTransport, JWTStrategy
+from fastapi_users.authentication import (
+    AuthenticationBackend,
+    BearerTransport,
+    JWTStrategy,
+)
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .models import UserModel
+
 # from .schemas import UserDBSchema, UserCreateSchema
 
 from open_needs_server.dependencies import get_db
-
 
 SECRET = "SECRET"
 
@@ -43,7 +47,9 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, uuid.UUID]):
     reset_password_token_secret = SECRET
     verification_token_secret = SECRET
 
-    async def on_after_register(self, user: UserModel, request: Optional[Request] = None):
+    async def on_after_register(
+        self, user: UserModel, request: Optional[Request] = None
+    ):
         print(f"User {user.id} has registered.")
 
     async def on_after_forgot_password(
@@ -59,5 +65,3 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, uuid.UUID]):
 
 async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
-
-

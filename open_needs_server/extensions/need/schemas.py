@@ -47,4 +47,3 @@ class NeedReturnSchema(NeedBaseSchema):
 
     class Config:
         orm_mode = True
-
