@@ -7,6 +7,7 @@ log = logging.getLogger(__name__)
 
 class EventLoggerExtension(ONSExtension):
     """Logs event information"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.version = VERSION
@@ -20,7 +21,7 @@ class EventLoggerExtension(ONSExtension):
             self.register_listener(event, self._event_logger)
 
     def _event_logger(self, event, data, extra, ext):
-        self.print(f'{event} fired by {ext} with {str(data)[:50]}')
+        self.print(f"{event} fired by {ext} with {str(data)[:50]}")
         # A listener functions needs to return the data, in this case it
         # is untouched
         return data

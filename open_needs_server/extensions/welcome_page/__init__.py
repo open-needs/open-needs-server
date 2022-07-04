@@ -18,7 +18,7 @@ class WelcomePage(ONSExtension):
         super().__init__(*args, **kwargs)
         self.version = VERSION
 
-        template_path = os.path.join(os.path.dirname(__file__), '_templates')
+        template_path = os.path.join(os.path.dirname(__file__), "_templates")
         templates = Jinja2Templates(directory=template_path)
 
         self.context = {"ons_app": self.ons_app}
@@ -26,9 +26,12 @@ class WelcomePage(ONSExtension):
         # Register welcome route
         @self.ons_app.get("/")
         async def welcome(request: Request):
-            return templates.TemplateResponse("ons_frame.html", self.context | {"request": request})
+            return templates.TemplateResponse(
+                "ons_frame.html", self.context | {"request": request}
+            )
 
         @self.ons_app.get("/welcome.html")
         async def welcome(request: Request):
-            return templates.TemplateResponse("welcome.html", self.context | {"request": request})
-
+            return templates.TemplateResponse(
+                "welcome.html", self.context | {"request": request}
+            )

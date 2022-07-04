@@ -8,7 +8,7 @@ projects_domains_table = Table(
     "project_domain",
     Base.metadata,
     Column("project_id", ForeignKey("projects.id"), primary_key=True),
-    Column("domain_id", ForeignKey("domains.id"), primary_key=True ),
+    Column("domain_id", ForeignKey("domains.id"), primary_key=True),
 )
 
 
@@ -24,6 +24,7 @@ class ProjectModel(Base):
     organization_id = Column(Integer, ForeignKey("organizations.id"))
     organization = relationship("OrganizationModel", back_populates="projects")
 
-    needs = relationship("NeedModel", back_populates="project", lazy='selectin')
-    domains = relationship("DomainModel", secondary=projects_domains_table,
-                           lazy='selectin')  #, lazy='selectin')
+    needs = relationship("NeedModel", back_populates="project", lazy="selectin")
+    domains = relationship(
+        "DomainModel", secondary=projects_domains_table, lazy="selectin"
+    )  # , lazy='selectin')

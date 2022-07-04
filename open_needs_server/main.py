@@ -11,12 +11,14 @@ import uvicorn
 
 
 # Set logger so that initialisation code can use configured loggers.
-logging_conf_path = os.path.join(os.path.dirname(__file__), 'logging.conf')
+logging_conf_path = os.path.join(os.path.dirname(__file__), "logging.conf")
 logging.config.fileConfig(logging_conf_path, disable_existing_loggers=False)
 
 log = logging.getLogger(__name__)
 log.setLevel(settings.server.log_level)  # Level for root
-logging.getLogger('open_needs_server').setLevel(settings.server.log_level)  # Level for server only
+logging.getLogger("open_needs_server").setLevel(
+    settings.server.log_level
+)  # Level for server only
 
 from open_needs_server.app import OpenNeedsServerApp
 from open_needs_server.database import create_db_and_tables
@@ -30,10 +32,11 @@ ons_app = OpenNeedsServerApp(
     title="Open-Needs Server",
     version=VERSION,
     description="REST API Server of Open-Needs",
-    license_info={"name": "MIT License",
-                  "url": "https://github.com/open-needs/open-needs-server/blob/main/LICENSE"},
-    contact={"name": "Open-Needs community",
-             "url": "https://github.com/open-needs"}
+    license_info={
+        "name": "MIT License",
+        "url": "https://github.com/open-needs/open-needs-server/blob/main/LICENSE",
+    },
+    contact={"name": "Open-Needs community", "url": "https://github.com/open-needs"},
 )
 
 # configure CORS
@@ -58,7 +61,7 @@ async def on_startup():
 def start_browser():
     """Opens the browser"""
     time.sleep(0.5)
-    webbrowser.open_new_tab(f'{settings.server.server}:{settings.server.port}')
+    webbrowser.open_new_tab(f"{settings.server.server}:{settings.server.port}")
 
 
 def start():
