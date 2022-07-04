@@ -7,19 +7,20 @@ from .routers import projects_router
 log = logging.getLogger(__name__)
 
 PROJECT_EVENTS = [
-    ('project_create', 'Called before project gets created'),
-    ('project_create_done', 'Called after project got created'),
-    ('project_read', 'Called before project get read'),
-    ('project_read_done', 'Called after project got read'),
-    ('project_update', 'Called before project gets updated'),
-    ('project_update_done', 'Called after project got updated'),
-    ('project_delete', 'Called before project gets deleted'),
-    ('project_delete_done', 'Called after project got deleted'),
+    ("project_create", "Called before project gets created"),
+    ("project_create_done", "Called after project got created"),
+    ("project_read", "Called before project get read"),
+    ("project_read_done", "Called after project got read"),
+    ("project_update", "Called before project gets updated"),
+    ("project_update_done", "Called after project got updated"),
+    ("project_delete", "Called before project gets deleted"),
+    ("project_delete_done", "Called after project got deleted"),
 ]
 
 
 class ProjectExtension(ONSExtension):
     """Project handling"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.version = VERSION
@@ -29,6 +30,6 @@ class ProjectExtension(ONSExtension):
 
         self.register_router(projects_router)
 
-        self.register_role('view_projects_all', 'Can read all projects')
-        self.register_role('change_projects_all', 'Can change all projects')
-        self.register_role('delete_projects_all', 'Can delete all projects')
+        self.register_role("view_projects_all", "Can read all projects")
+        self.register_role("change_projects_all", "Can change all projects")
+        self.register_role("delete_projects_all", "Can delete all projects")

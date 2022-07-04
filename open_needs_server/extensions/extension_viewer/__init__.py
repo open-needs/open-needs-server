@@ -9,6 +9,7 @@ log = logging.getLogger(__name__)
 
 class ExtensionViewerExtension(ONSExtension):
     """Basic extension information"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.version = VERSION

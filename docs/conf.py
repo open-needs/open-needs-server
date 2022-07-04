@@ -12,14 +12,15 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../'))
+
+sys.path.insert(0, os.path.abspath("../"))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'Open-Needs Server'
-copyright = '2022, Open-Needs community'
-author = 'Open-Needs community'
+project = "Open-Needs Server"
+copyright = "2022, Open-Needs community"
+author = "Open-Needs community"
 
 
 # -- General configuration ---------------------------------------------------
@@ -30,16 +31,16 @@ author = 'Open-Needs community'
 extensions = [
     "sphinx.ext.autosummary",
     "sphinx_immaterial",
-    'sphinxcontrib.autodoc_pydantic'
+    "sphinxcontrib.autodoc_pydantic",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -48,12 +49,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 # html_theme = 'alabaster'
-html_theme = 'sphinx_immaterial'
+html_theme = "sphinx_immaterial"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 ############
 
@@ -89,7 +90,6 @@ html_theme_options = {
             "primary": "white",
             "accent": "indigo",
         }
-
     ],
     "version_dropdown": False,
     # "version_info": [

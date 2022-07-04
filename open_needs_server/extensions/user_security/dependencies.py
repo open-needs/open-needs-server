@@ -14,17 +14,19 @@ from .models import RoleModel, UserModel
 log = logging.getLogger(__name__)
 
 fastapi_users_ext = FastAPIUsers(
-            get_user_manager,
-            [auth_backend],
-            UserReturnSchema,
-            UserCreateSchema,
-            UserUpdateSchema,
-            UserDBSchema,
-        )
+    get_user_manager,
+    [auth_backend],
+    UserReturnSchema,
+    UserCreateSchema,
+    UserUpdateSchema,
+    UserDBSchema,
+)
 
 current_user = fastapi_users_ext.current_user()
 current_active_user = fastapi_users_ext.current_user(active=True)
-current_active_verified_user = fastapi_users_ext.current_user(active=True, verified=True)
+current_active_verified_user = fastapi_users_ext.current_user(
+    active=True, verified=True
+)
 current_superuser = fastapi_users_ext.current_user(active=True, superuser=True)
 
 
@@ -32,12 +34,18 @@ class RoleChecker:
     def __init__(self, allowed_roles: List):
         self.allowed_roles = allowed_roles
 
-    async def __call__(self, db= Depends(get_db), user: UserDBSchema = Depends(current_active_user)):
-        result = await db.execute(select(RoleModel).filter(RoleModel.users.any(UserModel.email == user.email)))
+    async def __call__(
+        self, db=Depends(get_db), user: UserDBSchema = Depends(current_active_user)
+    ):
+        result = await db.execute(
+            select(RoleModel).filter(RoleModel.users.any(UserModel.email == user.email))
+        )
         user_roles = [role.name for role in result.scalars().all()]
 
         if not set(self.allowed_roles).issubset(user_roles):
-            log.debug(f'User {user.email} has no role for {self.allowed_roles}')
-            raise HTTPException(status_code=403, detail='Operation not permitted')
+            log.debug(f"User {user.email} has no role for {self.allowed_roles}")
+            raise HTTPException(status_code=403, detail="Operation not permitted")
         else:
-            log.debug(f'User {user.email} has needed roles: {",".join(self.allowed_roles)}')
+            log.debug(
+                f'User {user.email} has needed roles: {",".join(self.allowed_roles)}'
+            )

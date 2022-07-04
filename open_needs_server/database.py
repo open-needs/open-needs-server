@@ -13,14 +13,14 @@ class ONSBase(object):
     def to_dict(self):
         """Returns the current Model bas dict. Without any sqlalchemy specific data"""
         data = dict(self.__dict__)
-        data.pop('_sa_instance_state', None)
+        data.pop("_sa_instance_state", None)
         return data
 
 
 SQLALCHEMY_DATABASE_URL = settings.database.sql_string
 
 log = logging.getLogger(__name__)
-log.debug(f'SQL string: {SQLALCHEMY_DATABASE_URL}')
+log.debug(f"SQL string: {SQLALCHEMY_DATABASE_URL}")
 
 engine = create_async_engine(SQLALCHEMY_DATABASE_URL)
 # engine = create_async_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
@@ -38,4 +38,3 @@ async def create_db_and_tables():
 async def get_async_session() -> AsyncSession:
     async with async_session_maker() as session:
         yield session
-

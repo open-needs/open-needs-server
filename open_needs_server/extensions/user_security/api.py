@@ -18,8 +18,8 @@ async def get_roles(db: AsyncSession, skip: int = 0, limit: int = 100):
     roles_clean = []
     for role in roles:
         role = role.to_dict()
-        users_emails = [str(user.email) for user in role['users']]
-        role['users'] = users_emails
+        users_emails = [str(user.email) for user in role["users"]]
+        role["users"] = users_emails
         roles_clean.append(role)
 
     return roles_clean
@@ -33,16 +33,13 @@ async def get_role_by_name(db: AsyncSession, role_name: int):
 
 async def create_role(db: AsyncSession, role_name: str, description: str):
 
-    role = {
-        'name': role_name,
-        'description': description
-    }
+    role = {"name": role_name, "description": description}
 
     cursor = await db.execute(insert(RoleModel), role)
     await db.commit()
 
     # Get the just created role object
-    role_obj = await get_role_by_name(db, role['name'])
+    role_obj = await get_role_by_name(db, role["name"])
     return role_obj
 
 
@@ -50,27 +47,29 @@ async def update_role(db: AsyncSession, role_name: str, role: RoleUpdateSchema):
 
     # Be sure that the given users exist
     try:
-        result = await db.execute(select(UserModel).filter(UserModel.id.in_(role['users'])))
+        result = await db.execute(
+            select(UserModel).filter(UserModel.id.in_(role["users"]))
+        )
     except StatementError as e:
-        log.error(f'Invalid statement to update role: {e}')
-        raise ONSExtensionException(f'Invalid statement to update role: {e}')
+        log.error(f"Invalid statement to update role: {e}")
+        raise ONSExtensionException(f"Invalid statement to update role: {e}")
 
     role_users = result.scalars().all()
 
     if not role_users:
         raise ONSExtensionException(f'Referenced users not found: {role["users"]}')
 
-    if len(role_users) != len(role['users']):
+    if len(role_users) != len(role["users"]):
         found_ids = [str(ruser.id) for ruser in role_users]
-        missing_users = [ruser for ruser in role['users'] if ruser not in found_ids]
+        missing_users = [ruser for ruser in role["users"] if ruser not in found_ids]
 
-        raise ONSExtensionException(f'Referenced users not found: {missing_users}')
+        raise ONSExtensionException(f"Referenced users not found: {missing_users}")
 
     # Get the just created role object
     db_role = await get_role_by_name(db, role_name)
 
     for key, value in role.items():
-        if key != 'users':
+        if key != "users":
             setattr(db_role, key, value)
         else:
             # Now add the users to the role_obj

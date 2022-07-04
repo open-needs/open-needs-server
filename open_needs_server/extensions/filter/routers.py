@@ -14,7 +14,7 @@ filter_router = APIRouter(
     prefix="/api/filter",
     tags=["filter"],
     dependencies=[],
-    responses={"404": {"description": "Not found"}}
+    responses={"404": {"description": "Not found"}},
 )
 
 
