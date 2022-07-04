@@ -1,0 +1,4 @@
+# Requirements used to deploy the Server to AWS
+
+aws-cdk-lib==2.30.0
+constructs>=10.0.0,<11.0.0

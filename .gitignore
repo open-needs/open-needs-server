@@ -1,3 +1,5 @@
+*.swp
+package-lock.json
 .idea
 .venv
 .envrc
@@ -27,3 +29,7 @@ docs/_images/need_pie_*.png
 
 # Ignore dynaconf secret files
 .secrets.*
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
