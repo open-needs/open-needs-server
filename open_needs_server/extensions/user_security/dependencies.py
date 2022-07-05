@@ -1,4 +1,6 @@
 import logging
+import uuid
+
 from fastapi import Depends, HTTPException
 from fastapi_users import FastAPIUsers
 from pydantic.types import List
@@ -7,19 +9,13 @@ from sqlalchemy import select
 from open_needs_server.dependencies import get_db
 
 from .security import auth_backend, get_user_manager
-from .schemas import UserReturnSchema, UserCreateSchema, UserUpdateSchema, UserDBSchema
 from .models import RoleModel, UserModel
-
 
 log = logging.getLogger(__name__)
 
-fastapi_users_ext = FastAPIUsers(
+fastapi_users_ext = FastAPIUsers[UserModel, uuid.UUID](
     get_user_manager,
     [auth_backend],
-    UserReturnSchema,
-    UserCreateSchema,
-    UserUpdateSchema,
-    UserDBSchema,
 )
 
 current_user = fastapi_users_ext.current_user()
@@ -35,7 +31,7 @@ class RoleChecker:
         self.allowed_roles = allowed_roles
 
     async def __call__(
-        self, db=Depends(get_db), user: UserDBSchema = Depends(current_active_user)
+        self, db=Depends(get_db), user: UserModel = Depends(current_active_user)
     ):
         result = await db.execute(
             select(RoleModel).filter(RoleModel.users.any(UserModel.email == user.email))

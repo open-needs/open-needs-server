@@ -8,7 +8,7 @@ from open_needs_server.version import VERSION
 from open_needs_server.database import engine
 
 from .security import auth_backend, get_user_manager
-from .schemas import UserReturnSchema, UserCreateSchema, UserUpdateSchema, UserDBSchema
+from .schemas import UserReturnSchema, UserCreateSchema, UserUpdateSchema
 from .routers import roles_router
 from .api import create_role, get_role_by_name
 from .dependencies import fastapi_users_ext
@@ -37,11 +37,15 @@ class UserSecurityExtension(ONSExtension):
         )
 
         self.register_router(
-            fastapi_users_ext.get_register_router(), prefix="/auth", tags=["auth"]
+            fastapi_users_ext.get_register_router(UserReturnSchema, UserCreateSchema),
+            prefix="/auth",
+            tags=["auth"],
         )
 
         self.register_router(
-            fastapi_users_ext.get_verify_router(), prefix="/auth", tags=["auth"]
+            fastapi_users_ext.get_verify_router(UserReturnSchema),
+            prefix="/auth",
+            tags=["auth"],
         )
 
         self.register_router(
@@ -49,7 +53,9 @@ class UserSecurityExtension(ONSExtension):
         )
 
         self.register_router(
-            fastapi_users_ext.get_users_router(), prefix="/users", tags=["users"]
+            fastapi_users_ext.get_users_router(UserReturnSchema, UserUpdateSchema),
+            prefix="/users",
+            tags=["users"],
         )
 
         self.register_role("view_projects_all", "Can read all projects")

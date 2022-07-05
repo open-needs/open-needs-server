@@ -1,11 +1,12 @@
 """
 Setups the user handling and all needed dependencies, managers and co.
 """
+import uuid
 
 from fastapi import Depends, Request
 from typing import Optional
 
-from fastapi_users import BaseUserManager
+from fastapi_users import BaseUserManager, UUIDIDMixin
 from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users.authentication import (
     AuthenticationBackend,
@@ -16,16 +17,16 @@ from fastapi_users.authentication import (
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .models import UserModel
-from .schemas import UserDBSchema, UserCreateSchema
+
+# from .schemas import UserDBSchema, UserCreateSchema
 
 from open_needs_server.dependencies import get_db
-
 
 SECRET = "SECRET"
 
 
 async def get_user_db(session: AsyncSession = Depends(get_db)):
-    yield SQLAlchemyUserDatabase(UserDBSchema, session, UserModel)
+    yield SQLAlchemyUserDatabase(session, UserModel)
 
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
@@ -42,8 +43,7 @@ auth_backend = AuthenticationBackend(
 )
 
 
-class UserManager(BaseUserManager[UserCreateSchema, UserModel]):
-    user_db_model = UserDBSchema
+class UserManager(UUIDIDMixin, BaseUserManager[UserModel, uuid.UUID]):
     reset_password_token_secret = SECRET
     verification_token_secret = SECRET
 

@@ -2,7 +2,7 @@ rich
 uvicorn
 pydantic
 fastapi
-fastapi-users[sqlalchemy2]
+fastapi-users[sqlalchemy]>=10.0.0
 aiosqlite
 dynaconf
 sqladmin

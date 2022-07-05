@@ -8,7 +8,7 @@ from open_needs_server.extensions.user_security.dependencies import (
     current_active_user,
     RoleChecker,
 )
-from open_needs_server.extensions.user_security.schemas import UserDBSchema
+from open_needs_server.extensions.user_security.models import UserModel
 
 from .schemas import NeedReturnSchema, NeedCreateSchema, NeedUpdateSchema
 from .api import *
@@ -43,7 +43,7 @@ async def rest_read_items(
     limit: int = 100,
     db: Session = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
-    user: UserDBSchema = Depends(current_active_user),
+    user: UserModel = Depends(current_active_user),
 ):
     """Needed roles: view_organizations_all"""
     needs = await get_needs(ext, db, skip=skip, limit=limit)
@@ -60,7 +60,7 @@ async def rest_create_need(
     need: NeedCreateSchema,
     db: Session = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
-    user: UserDBSchema = Depends(current_active_user),
+    user: UserModel = Depends(current_active_user),
 ):
     need_json = jsonable_encoder(need)
 
@@ -82,7 +82,7 @@ async def rest_read_need(
     need_id: int,
     db: AsyncSession = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
-    user: UserDBSchema = Depends(current_active_user),
+    user: UserModel = Depends(current_active_user),
 ):
     db_need = await get_need(ext, db, need_id=need_id)
     if db_need is None:

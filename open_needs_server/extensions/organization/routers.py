@@ -8,7 +8,7 @@ from open_needs_server.extensions.user_security.dependencies import (
     current_active_user,
     RoleChecker,
 )
-from open_needs_server.extensions.user_security.schemas import UserDBSchema
+from open_needs_server.extensions.user_security.models import UserModel
 
 from .schemas import (
     OrganizationReturnSchema,
@@ -54,7 +54,7 @@ async def rest_read_organizations(
     limit: int = 100,
     db: AsyncSession = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
-    user: UserDBSchema = Depends(current_active_user),
+    user: UserModel = Depends(current_active_user),
 ):
 
     ext.print(f"user: {user.email} - {user.is_active}")

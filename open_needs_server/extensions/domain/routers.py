@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from open_needs_server.extensions.base import ONSExtension
-from open_needs_server.extensions.user_security.schemas import UserDBSchema
+from open_needs_server.extensions.user_security.models import UserModel
 from open_needs_server.extensions.user_security.dependencies import (
     current_active_user,
     RoleChecker,
@@ -13,6 +13,7 @@ from .schemas import DomainSchema, DomainCreateSchema, DomainChangeSchema
 from .api import *
 
 from open_needs_server.dependencies import get_db
+
 
 domains_router = APIRouter(
     prefix="/api/domains",
@@ -24,6 +25,13 @@ domains_router = APIRouter(
 
 async def get_extension(request: Request):
     return request.app.ons_extensions["DomainExtension"]
+
+
+class OnsProjectNotFound(OnsExtensionException):
+    """A requested object could not be found"""
+
+    pass
+
 
 
 read_domains = RoleChecker(["view_domains_all"])
@@ -43,7 +51,7 @@ async def rest_read_domains(
     limit: int = 100,
     db: AsyncSession = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
-    user: UserDBSchema = Depends(current_active_user),
+    user: UserModel = Depends(current_active_user),
 ):
     db_domains = await get_domains(db, skip=skip, limit=limit)
     return db_domains
@@ -60,7 +68,8 @@ async def rest_create_domain(
     domain: DomainCreateSchema,
     db: AsyncSession = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
-    user: UserDBSchema = Depends(current_active_user),
+    user: UserModel = Depends(current_active_user),
+
 ):
     domain_json = jsonable_encoder(domain)
     db_domain = await get_domain_by_title(db, domain_title=domain.title)
@@ -84,7 +93,7 @@ async def rest_read_domain(
     domain_id: int,
     db: AsyncSession = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
-    user: UserDBSchema = Depends(current_active_user),
+    user: UserModel = Depends(current_active_user),
 ):
     db_domain = await get_domain(db, domain_id=domain_id)
     if db_domain is None:
@@ -104,7 +113,8 @@ async def rest_update_domain(
     domain: DomainChangeSchema,
     db: AsyncSession = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
-    user: UserDBSchema = Depends(current_active_user),
+    user: UserModel = Depends(current_active_user),
+
 ):
     domain_json = jsonable_encoder(domain)
     db_domain = await get_domain(db, domain_id=domain_id)
@@ -125,7 +135,8 @@ async def rest_delete_domain(
     domain_id: int,
     db: AsyncSession = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
-    user: UserDBSchema = Depends(current_active_user),
+    user: UserModel = Depends(current_active_user),
+
 ):
     """Deletes a selected organizations by its ID"""
     try:

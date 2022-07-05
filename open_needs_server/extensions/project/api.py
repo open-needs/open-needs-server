@@ -34,7 +34,7 @@ async def create_project(db: AsyncSession, project: ProjectSchema):
     for domain_id in project["domains"]:
         domain_db = await get_domain(db, domain_id)
         if not domain_db:
-            raise HTTPException(f"Unknown domain id: {domain_id}")
+            raise HTTPException(404, detail=f"Unknown domain id: {domain_id}")
         domains_db.append(domain_db)
 
     cursor = await db.execute(insert(ProjectModel), project)
@@ -101,3 +101,5 @@ async def delete_project(
 
 class OnsProjectNotFound(OnsExtensionException):
     """A requested object could not be found"""
+
+    pass
