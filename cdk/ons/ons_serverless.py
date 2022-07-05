@@ -57,12 +57,18 @@ class OnsServerless(Stack):
     def create_sources(self):
         print('Copying sources')
         source_path = 'open_needs_server'
+        config_path = 'settings.toml'
+
         target_folder = 'open_needs_server'
         target_path = '.build/src/'
 
         target_final = f'{target_path}/{target_folder}'
         shutil.copytree(source_path, target_final, dirs_exist_ok=True)
         print(f'  {target_path}')
+
+        print('Copying config')
+        shutil.copy(config_path, target_path)
+
         return target_path
 
     def create_dependencies_layer(self, project_name, function_name: str) -> lambda_.LayerVersion:

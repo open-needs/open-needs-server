@@ -2,6 +2,7 @@ rich
 uvicorn
 pydantic
 fastapi
+sqlalchemy[asyncio]
 fastapi-users[sqlalchemy]>=10.0.0
 aiosqlite
 dynaconf
