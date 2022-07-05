@@ -33,6 +33,7 @@ class OnsProjectNotFound(OnsExtensionException):
     pass
 
 
+
 read_domains = RoleChecker(["view_domains_all"])
 write_domains = RoleChecker(["change_domains_all"])
 delete_domains = RoleChecker(["delete_domains_all"])
@@ -68,6 +69,7 @@ async def rest_create_domain(
     db: AsyncSession = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
     user: UserModel = Depends(current_active_user),
+
 ):
     domain_json = jsonable_encoder(domain)
     db_domain = await get_domain_by_title(db, domain_title=domain.title)
@@ -112,6 +114,7 @@ async def rest_update_domain(
     db: AsyncSession = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
     user: UserModel = Depends(current_active_user),
+
 ):
     domain_json = jsonable_encoder(domain)
     db_domain = await get_domain(db, domain_id=domain_id)
@@ -133,6 +136,7 @@ async def rest_delete_domain(
     db: AsyncSession = Depends(get_db),
     ext: ONSExtension = Depends(get_extension),
     user: UserModel = Depends(current_active_user),
+
 ):
     """Deletes a selected organizations by its ID"""
     try:

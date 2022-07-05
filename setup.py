@@ -1,8 +1,8 @@
 #!/usr/bin/env python
+from distutils.core import setup
+import os
 import os.path
 
-import os
-from distutils.core import setup
 
 with open(os.path.join("requirements", "server.txt"), encoding="utf-8") as reqs:
     REQUIREMENTS = [reqs.readlines()]
