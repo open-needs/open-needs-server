@@ -7,7 +7,8 @@ from aws_cdk import (
     Stack,
     aws_ec2 as ec2,
     aws_efs as efs,
-    aws_lambda as lambda_
+    aws_lambda_python_alpha as pylambda,
+    aws_lambda as _lambda
 )
 from constructs import Construct
 
@@ -36,15 +37,18 @@ class OnsServerless(Stack):
             })
 
         entrypoint_name = 'ons_layer'
+        self.create_sources()
 
-        lambda_.Function(
+        # https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_lambda_python_alpha/PythonFunction.html
+        pylambda.PythonFunction(
             self,
             "ONS_Start",
-            filesystem=lambda_.FileSystem.from_efs_access_point(access_point, '/mnt/ons'),
+            filesystem=_lambda.FileSystem.from_efs_access_point(access_point, '/mnt/ons'),
             vpc=vpc,
-            runtime=lambda_.Runtime.PYTHON_3_9,  # required
-            code=lambda_.Code.from_asset(self.create_sources()),
-            handler="open_needs_server.aws.handler",
+            runtime=_lambda.Runtime.PYTHON_3_7,  # required
+            entry=".build/src/",
+            index="open_needs_server/aws.py",
+            handler="handler",
             layers=[
                 self.create_dependencies_layer(self.stack_name, entrypoint_name)
             ]
@@ -52,9 +56,9 @@ class OnsServerless(Stack):
 
     def clean_build_folder(self):
         print('Cleaning .build')
-        shutil.rmtree('.build')
+        shutil.rmtree('.build', ignore_errors=True)
 
-    def create_sources(self):
+    def create_sources(self) -> str:
         print('Copying sources')
         source_path = 'open_needs_server'
         config_path = 'settings.toml'
@@ -71,21 +75,40 @@ class OnsServerless(Stack):
 
         return target_path
 
-    def create_dependencies_layer(self, project_name, function_name: str) -> lambda_.LayerVersion:
+    def create_dependencies_layer(self, project_name, function_name: str) -> pylambda.PythonLayerVersion:
+        """
+        https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_lambda/LayerVersion.html
+
+        :param project_name:
+        :param function_name:
+        :return:
+        """
         print('Copying dependencies')
         requirements_files = [
             'requirements/server.txt',
             'requirements/aws.txt'
         ]
-        output_dir = f'.build/deps'
+        output_dir = f'.build/deps/'
+        output_req = f'.build/deps/requirements.txt'
+        os.makedirs(output_dir, exist_ok=True)
 
-        if not os.environ.get('SKIP_PIP'):
-            subprocess.check_call(
-                f'pip install -r {" -r".join(requirements_files)} -t {output_dir}/python'.split()
-            )
+        # if not os.environ.get('SKIP_PIP'):
+        #     subprocess.check_call(
+        #         f'pip install -r {" -r".join(requirements_files)} -t {output_dir}/python'.split()
+        #     )
+
+        with open(output_req, 'w') as req_output:
+            for req_file in requirements_files:
+                with open(req_file) as req_input:
+                    req_output.write(req_input.read())
+                    req_output.write('\n')
 
         layer_id = f'{project_name}-{function_name}-dependencies'
-        layer_code = lambda_.Code.from_asset(output_dir)
+        # layer_code = lambda_.Code.from_asset(output_dir)
+
+        # Uses docker to build deps
+        layer = pylambda.PythonLayerVersion(self, layer_id,
+                                            entry=output_dir)
 
         print(f' {output_dir}')
-        return lambda_.LayerVersion(self, layer_id, code=layer_code)
+        return layer
