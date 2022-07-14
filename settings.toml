@@ -21,7 +21,8 @@ extensions = [
 ]
 
 [database]
-sql_string = "sqlite+aiosqlite:///./ons.db"
+# sql_string = "sqlite+aiosqlite:///./ons.db"
+sql_string = "sqlite+aiosqlite:////tmp/ons.db"
 
 [admin]
 

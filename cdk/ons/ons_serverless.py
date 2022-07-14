@@ -3,6 +3,7 @@ import subprocess
 import shutil
 
 from aws_cdk import (
+    Duration,
     BundlingOptions,
     Stack,
     aws_ec2 as ec2,
@@ -39,20 +40,12 @@ class OnsServerless(Stack):
         entrypoint_name = 'ons_layer'
         self.create_sources()
 
-        # https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_lambda_python_alpha/PythonFunction.html
-        pylambda.PythonFunction(
-            self,
-            "ONS_Start",
-            filesystem=_lambda.FileSystem.from_efs_access_point(access_point, '/mnt/ons'),
-            vpc=vpc,
-            runtime=_lambda.Runtime.PYTHON_3_7,  # required
-            entry=".build/src/",
-            index="open_needs_server/aws.py",
-            handler="handler",
-            layers=[
-                self.create_dependencies_layer(self.stack_name, entrypoint_name)
-            ]
-        )
+        docker_lambda = _lambda.DockerImageFunction(self, 'ONS_Start_Docker',
+                                                    code=_lambda.DockerImageCode.from_image_asset(
+                                                        '.'),
+                                                    timeout=Duration.seconds(30),  # Default is only 3 seconds
+                                                    memory_size=512  # If your docker code is pretty complex
+                                                    )
 
     def clean_build_folder(self):
         print('Cleaning .build')
