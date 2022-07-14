@@ -1,3 +1,5 @@
+*.swp
+package-lock.json
 .idea
 .venv
 .envrc
@@ -16,6 +18,7 @@ _build
 .doctrees
 docs/github_images/
 .eggs/
+.build/
 docs/_images/need_pie_*.png
 
 .devcontainer/
@@ -27,3 +30,7 @@ docs/_images/need_pie_*.png
 
 # Ignore dynaconf secret files
 .secrets.*
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out

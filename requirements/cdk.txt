@@ -1,0 +1,5 @@
+# Requirements used to deploy the Server to AWS
+
+# aws-cdk-lib==2.30.0
+aws-cdk.aws-lambda-python-alpha
+constructs>=10.0.0,<11.0.0
